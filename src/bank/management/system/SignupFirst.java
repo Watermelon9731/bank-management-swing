@@ -1,5 +1,6 @@
 package bank.management.system;
 
+import bank.management.system.constants.Background;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
@@ -8,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 
-public class SignUp extends JFrame implements ActionListener {
+public class SignupFirst extends JFrame implements ActionListener {
     JLabel bankIconLabel, headingLabel, pageNumberLabel, titleLabel, nameLabel, dobLabel, accountLabel, genderLabel, emailLabel, maritalStatusLabel, addressLabel, pinCodeLabel, cityLabel, provinceLabel;
     JTextField nameTextField, accountTextField, emailTextField, addressTextField, cityTextField, provinceTextField;
     JPasswordField pinCodeTextField, rePinCodeTextField;
@@ -33,7 +34,7 @@ public class SignUp extends JFrame implements ActionListener {
         return this.formStartY + lineHeight * level;
     }
 
-    SignUp() {
+    SignupFirst() {
         super("Application Form");
 
         ImageIcon bankIconRaw = new ImageIcon(ClassLoader.getSystemResource("images/icons/bank.png"));
@@ -108,11 +109,13 @@ public class SignUp extends JFrame implements ActionListener {
         add(genderLabel);
 
         maleGenderRadioButton = new JRadioButton("Male");
+        maleGenderRadioButton.setBackground(Background.BACKGROUND_COLOR);
         maleGenderRadioButton.setFont(new Font("Arial", Font.BOLD, 16));
         maleGenderRadioButton.setBounds(this.formTextFieldStartX, this.getPositionY(3), this.formRadioButtonWidth, this.lineHeight);
         add(maleGenderRadioButton);
 
         femaleGenderRadioButton = new JRadioButton("Female");
+        femaleGenderRadioButton.setBackground(Background.BACKGROUND_COLOR);
         femaleGenderRadioButton.setFont(new Font("Arial", Font.BOLD, 16));
         femaleGenderRadioButton.setBounds(this.formTextFieldStartX + this.formRadioButtonWidth, this.getPositionY(3), this.formRadioButtonWidth, this.lineHeight);
         add(femaleGenderRadioButton);
@@ -142,16 +145,19 @@ public class SignUp extends JFrame implements ActionListener {
         add(maritalStatusLabel);
 
         marriedMaritalStatusRadioButton = new JRadioButton("Married");
+        marriedMaritalStatusRadioButton.setBackground(Background.BACKGROUND_COLOR);
         marriedMaritalStatusRadioButton.setFont(new Font("Arial", Font.BOLD, 16));
         marriedMaritalStatusRadioButton.setBounds(this.formTextFieldStartX, this.getPositionY(5), this.formRadioButtonWidth, this.lineHeight);
         add(marriedMaritalStatusRadioButton);
 
         unmarriedMaritalStatusRadioButton = new JRadioButton("Unmarried");
+        unmarriedMaritalStatusRadioButton.setBackground(Background.BACKGROUND_COLOR);
         unmarriedMaritalStatusRadioButton.setFont(new Font("Arial", Font.BOLD, 16));
         unmarriedMaritalStatusRadioButton.setBounds(this.formTextFieldStartX + this.formRadioButtonWidth, this.getPositionY(5), this.formRadioButtonWidth, this.lineHeight);
         add(unmarriedMaritalStatusRadioButton);
 
         otherMaritalStatusRadioButton = new JRadioButton("Other");
+        otherMaritalStatusRadioButton.setBackground(Background.BACKGROUND_COLOR);
         otherMaritalStatusRadioButton.setFont(new Font("Arial", Font.BOLD, 16));
         otherMaritalStatusRadioButton.setBounds(this.formTextFieldStartX + this.formRadioButtonWidth * 2, this.getPositionY(5), this.formRadioButtonWidth, this.lineHeight);
         add(otherMaritalStatusRadioButton);
@@ -229,21 +235,20 @@ public class SignUp extends JFrame implements ActionListener {
         nextButton = new JButton("Next");
         nextButton.setFont(new Font("Arial", Font.BOLD, 16));
         nextButton.setBackground(Color.BLACK);
-        nextButton.setForeground(Color.BLACK);
+        nextButton.setForeground(Color.WHITE);
         nextButton.setBounds(560, this.getPositionY(12), 80, 50);
         nextButton.addActionListener(this);
         add(nextButton);
 
-        getContentPane().setBackground(new Color(222, 255, 228));
+        getContentPane().setBackground(Background.BACKGROUND_COLOR);
         setLayout(null);
-        setSize(850, 800);
+        setSize(800, 800);
         setLocation(360, 40);
         setVisible(true);
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-
+    public void actionPerformed(ActionEvent event) {
         String formId = fourDigitsIdString;
         String name = nameTextField.getText();
         String account = accountTextField.getText();
@@ -267,12 +272,47 @@ public class SignUp extends JFrame implements ActionListener {
         String address = addressTextField.getText();
         String city = cityTextField.getText();
         String pinCode = pinCodeTextField.getText();
+        String pinCodeConfirmation = pinCodeTextField.getText();
         String province = provinceTextField.getText();
+
+        try {
+            if (nameTextField.getText().equals("")) {
+                JOptionPane.showMessageDialog(null, "Please enter your name");
+            } else if (accountTextField.getText().equals("")) {
+                JOptionPane.showMessageDialog(null, "Please enter your account");
+            } else if (dob.equals("")) {
+                JOptionPane.showMessageDialog(null, "Please enter your dob");
+            } else if (gender.equals("")) {
+                JOptionPane.showMessageDialog(null, "Please enter your Gender");
+            } else if (email.equals("")) {
+                JOptionPane.showMessageDialog(null, "Please enter your email");
+            } else if (maritalStatus.equals("")) {
+                JOptionPane.showMessageDialog(null, "Please enter your marital status");
+            } else if (address.equals("")) {
+                JOptionPane.showMessageDialog(null, "Please enter your address");
+            } else if (city.equals("")) {
+                JOptionPane.showMessageDialog(null, "Please enter your city");
+            } else if (pinCode.equals("")) {
+                JOptionPane.showMessageDialog(null, "Please enter your pin code");
+            } else if (!pinCodeConfirmation.equals(pinCode)) {
+                JOptionPane.showMessageDialog(null, "Please confirm your pin code");
+            } else if (province.equals("")) {
+                JOptionPane.showMessageDialog(null, "Please enter your province");
+            } else {
+                Connector connector = new Connector();
+                String addValuesQuery = "insert into signup values ('" + formId + "', '" + name + "','" + account + "','" + dob + "','" + gender + "','" + email + "', '" + maritalStatus + "', '" + address + "', '" + city + "','" + pinCode + "','" + province + "' )";
+                connector.statement.executeUpdate(addValuesQuery);
+                new SignupSecond();
+                setVisible(false);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
 
     }
 
     public static void main(String[] args) {
-        new SignUp();
+        new SignupFirst();
     }
 }

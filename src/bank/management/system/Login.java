@@ -95,9 +95,13 @@ public class Login extends JFrame implements ActionListener {
         backgroundImageLabel.setBounds(0, 0, 850, 480);
         add(backgroundImageLabel);
 
-
         setVisible(true);
 
+    }
+
+    public void textFieldClear() {
+        cardNumberTextField.setText("");
+        pinNumberPasswordField.setText("");
     }
 
     @Override
@@ -106,10 +110,11 @@ public class Login extends JFrame implements ActionListener {
             if (e.getSource() == loginButton) {
 
             } else if (e.getSource() == signUpButton) {
-                cardNumberTextField.setText("");
-                pinNumberPasswordField.setText("");
+                textFieldClear();
+                new SignupFirst();
+                setVisible(false);
             } else if (e.getSource() == clearButton) {
-
+                textFieldClear();
             }
         } catch (Exception exception) {
             exception.printStackTrace();
