@@ -24,12 +24,15 @@ public class SignupSecond extends JFrame implements ActionListener {
     int formTextFieldStartX = formStartX + formLabelWidth;
     int formRadioButtonWidth = 150;
 
+    String formId;
+
     public int getPositionY(int level) {
         return this.formStartY + lineHeight * level;
     }
 
-    SignupSecond() {
+    SignupSecond(String formId) {
         super("Application Form");
+        this.formId = formId;
 
         ImageIcon bankIconRaw = new ImageIcon(ClassLoader.getSystemResource("images/icons/bank.png"));
         Image bankIconResizedImage = bankIconRaw.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
@@ -39,7 +42,7 @@ public class SignupSecond extends JFrame implements ActionListener {
         bankIconLabel.setBounds(25, 10, 100, 100);
         add(bankIconLabel);
 
-        headingLabel = new JLabel("Application Form No." + "");
+        headingLabel = new JLabel("Application Form No." + this.formId);
         headingLabel.setForeground(Color.BLACK);
         headingLabel.setFont(new Font("Arial", Font.BOLD, 30));
         headingLabel.setBounds(150, 30, 600, 40);
@@ -77,10 +80,10 @@ public class SignupSecond extends JFrame implements ActionListener {
         religionLabel.setBounds(this.formStartX, this.getPositionY(1), this.formLabelWidth, this.lineHeight);
         add(religionLabel);
 
-        String religion[] = {"None","Christian","Muslim", "Hindu", "Other"};
+        String religion[] = {"None", "Christian", "Muslim", "Hindu", "Other"};
         religionComboBox = new JComboBox(religion);
         religionComboBox.setBackground(Color.WHITE);
-        religionComboBox.setFont(new Font("Arial",Font.BOLD,22));
+        religionComboBox.setFont(new Font("Arial", Font.BOLD, 22));
         religionComboBox.setBounds(this.formTextFieldStartX, this.getPositionY(1), this.formTextFieldWidth, this.lineHeight);
         add(religionComboBox);
 
@@ -116,10 +119,10 @@ public class SignupSecond extends JFrame implements ActionListener {
         educationLabel.setBounds(this.formStartX, this.getPositionY(4), this.formLabelWidth, this.lineHeight);
         add(educationLabel);
 
-        String education[] = {"Undergraduate","Non-Graduate","Graduate","Post-Graduate", "Doctorate", "Others"};
+        String education[] = {"Undergraduate", "Non-Graduate", "Graduate", "Post-Graduate", "Doctorate", "Others"};
         educationComboBox = new JComboBox(education);
         educationComboBox.setBackground(Color.WHITE);
-        educationComboBox.setFont(new Font("Arial",Font.BOLD,22));
+        educationComboBox.setFont(new Font("Arial", Font.BOLD, 22));
         educationComboBox.setBounds(this.formTextFieldStartX, this.getPositionY(4), this.formTextFieldWidth, this.lineHeight);
         add(educationComboBox);
 
@@ -140,11 +143,11 @@ public class SignupSecond extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        new SignupThird();
+        new SignupThird(formId);
         setVisible(false);
     }
 
     public static void main(String[] args) {
-        new SignupSecond();
+        new SignupSecond("");
     }
 }

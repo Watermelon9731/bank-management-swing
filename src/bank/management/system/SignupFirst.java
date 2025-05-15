@@ -302,7 +302,7 @@ public class SignupFirst extends JFrame implements ActionListener {
                 Connector connector = new Connector();
                 String addValuesQuery = "insert into signup values ('" + formId + "', '" + name + "','" + account + "','" + dob + "','" + gender + "','" + email + "', '" + maritalStatus + "', '" + address + "', '" + city + "','" + pinCode + "','" + province + "' )";
                 connector.statement.executeUpdate(addValuesQuery);
-                new SignupSecond();
+                new SignupSecond(formId);
                 setVisible(false);
             }
         } catch (Exception ex) {
