@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 
 public class SignupThird extends JFrame implements ActionListener {
     JLabel bankIconLabel, headingLabel, pageNumberLabel, titleLabel, accountTypeLabel, serviceRequiredLabel;
@@ -167,6 +168,63 @@ public class SignupThird extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        String actionType = null;
+        if (savingAccountRadioButton.isSelected()) {
+            actionType = "Saving Account";
+        } else if (fixedDepositRadioButton.isSelected()) {
+            actionType = "Fixed Deposit Account";
+        } else if (currentAccountRadioButton.isSelected()) {
+            actionType = "Current Account";
+        } else if (recurringDepositAccountRadioButton.isSelected()) {
+            actionType = "Recurring Deposit Account";
+        }
+
+        Random randomNumber = new Random();
+        long sevenDigitsNumber = (randomNumber.nextLong() % 90000000L) + 1409963000000000L;
+        String cardNumber = "" + Math.abs(sevenDigitsNumber);
+
+        long threeDigitsNumber = (randomNumber.nextLong() % 9000L)+ 1000L;
+        String pin = "" + Math.abs(threeDigitsNumber);
+
+        String services = "";
+        if(atmCardCheckBox.isSelected()){
+            services = services+"ATM Card ";
+        } else if (internetBankingCheckBox.isSelected()) {
+            services = services+"Internet Banking";
+        } else if (mobileBankingCheckBox.isSelected()) {
+            services = services+"Mobile Banking";
+        } else if (emailAlertCheckBox.isSelected()) {
+            services = services+"Email Alerts";
+        } else if (chequeBookCheckbox.isSelected()) {
+            services = services+"Cheque Book";
+        } else if (eStatementCheckbox.isSelected()) {
+            services = services+"E-Statement";
+        }
+
+        try {
+            if (e.getSource()== submitButton){
+                if (actionType.equals("")){
+                    JOptionPane.showMessageDialog(null,"Fill all the fields");
+                }else {
+                    Connector connector = new Connector();
+
+                    String addInformationQuery = "insert into signupthree values('"+this.formId+"', '"+actionType+"','"+cardNumber+"','"+pin+"','"+services+"')";
+
+                    String loginQuery = "insert into login values('"+this.formId+"','"+cardNumber+"','"+pin+"')";
+                    connector.statement.executeUpdate(addInformationQuery);
+
+                    connector.statement.executeUpdate(loginQuery);
+                    JOptionPane.showMessageDialog(null,"Card Number : "+cardNumber+" Pin : "+pin );
+                    new Deposit(pin);
+                    setVisible(false);
+                }
+            } else if (e.getSource() == cancelButton) {
+                System.exit(0);
+            }
+
+        }catch (Exception E){
+            E.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
