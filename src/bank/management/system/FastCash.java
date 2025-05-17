@@ -1,5 +1,7 @@
 package bank.management.system;
 
+import bank.management.system.constants.Background;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,84 +10,96 @@ import java.sql.ResultSet;
 import java.util.Date;
 
 public class FastCash extends JFrame implements ActionListener {
-    JButton b1, b2, b3, b4, b5, b6, b7;
+    JLabel backgroundLabel, headingLabel, noticeLabel;
+    JButton withdraw1500Button, withdraw1000Button, withdraw300Button, withdraw2000Button, withdraw500Button, withdraw5000Button, backButton;
+
     String pinCode;
 
     FastCash(String pinCode) {
         this.pinCode = pinCode;
 
-        ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("images/backgrounds/atm.png"));
-        Image i2 = i1.getImage().getScaledInstance(1550, 830, Image.SCALE_DEFAULT);
-        ImageIcon i3 = new ImageIcon(i2);
-        JLabel l3 = new JLabel(i3);
-        l3.setBounds(0, 0, 1550, 830);
-        add(l3);
-
-        JLabel label = new JLabel("SELECT WITHDRAW AMOUNT");
-        label.setBounds(445, 180, 700, 35);
-        label.setForeground(Color.WHITE);
-        label.setFont(new Font("System", Font.BOLD, 23));
-        l3.add(label);
-
-        b1 = new JButton("Rs. 100");
-        b1.setForeground(Color.WHITE);
-        b1.setBackground(new Color(65, 125, 128));
-        b1.setBounds(410, 274, 150, 35);
-        b1.addActionListener(this);
-        l3.add(b1);
-
-        b2 = new JButton("Rs. 500");
-        b2.setForeground(Color.WHITE);
-        b2.setBackground(new Color(65, 125, 128));
-        b2.setBounds(700, 274, 150, 35);
-        b2.addActionListener(this);
-        l3.add(b2);
-
-        b3 = new JButton("Rs. 1000");
-        b3.setForeground(Color.WHITE);
-        b3.setBackground(new Color(65, 125, 128));
-        b3.setBounds(410, 318, 150, 35);
-        b3.addActionListener(this);
-        l3.add(b3);
-
-        b4 = new JButton("Rs. 2000");
-        b4.setForeground(Color.WHITE);
-        b4.setBackground(new Color(65, 125, 128));
-        b4.setBounds(700, 318, 150, 35);
-        b4.addActionListener(this);
-        l3.add(b4);
-
-        b5 = new JButton("Rs. 5000");
-        b5.setForeground(Color.WHITE);
-        b5.setBackground(new Color(65, 125, 128));
-        b5.setBounds(410, 362, 150, 35);
-        b5.addActionListener(this);
-        l3.add(b5);
-
-        b6 = new JButton("Rs. 10000");
-        b6.setForeground(Color.WHITE);
-        b6.setBackground(new Color(65, 125, 128));
-        b6.setBounds(700, 362, 150, 35);
-        b6.addActionListener(this);
-        l3.add(b6);
-
-        b7 = new JButton("BACK");
-        b7.setForeground(Color.WHITE);
-        b7.setBackground(new Color(65, 125, 128));
-        b7.setBounds(700, 406, 150, 35);
-        b7.addActionListener(this);
-        l3.add(b7);
-
         setLayout(null);
-        setSize(1550, 1080);
+        setSize(Background.BACKGROUND_WIDTH, Background.BACKGROUND_HEIGHT);
         setLocation(0, 0);
+
+        headingLabel = new JLabel("Nhập số tiền cần rút");
+        headingLabel.setForeground(Color.BLACK);
+        headingLabel.setFont(new Font("Arial", Font.BOLD, Background.HEADING_FONT_SIZE));
+        headingLabel.setBounds(0, 180, Background.BACKGROUND_WIDTH, 35);
+        headingLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        add(headingLabel);
+
+        noticeLabel = new JLabel("Ngân hàng sẽ thu phí chủ thẻ khi giao dịch tại ATM");
+        noticeLabel.setForeground(Color.BLACK);
+        noticeLabel.setFont(new Font("Arial", Font.BOLD, Background.DETAIL_FONT_SIZE));
+        noticeLabel.setBounds(0, 230, Background.BACKGROUND_WIDTH, 35);
+        noticeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        add(noticeLabel);
+
+        withdraw1500Button = new JButton("1.500.000");
+        withdraw1500Button.setForeground(Color.WHITE);
+        withdraw1500Button.setBackground(Background.BUTTON_PRIMARY);
+        withdraw1500Button.setBounds(Background.ATM_BUTTON_LEFT_START_X, Background.ATM_BUTTON_START_Y, 150, Background.ATM_BUTTON_HEIGHT);
+        withdraw1500Button.addActionListener(this);
+        add(withdraw1500Button);
+
+        withdraw300Button = new JButton("300.000");
+        withdraw300Button.setForeground(Color.WHITE);
+        withdraw300Button.setBackground(Background.BUTTON_PRIMARY);
+        withdraw300Button.setBounds(Background.ATM_BUTTON_RIGHT_START_X, Background.ATM_BUTTON_START_Y, 150, Background.ATM_BUTTON_HEIGHT);
+        withdraw300Button.addActionListener(this);
+        add(withdraw300Button);
+
+        withdraw1000Button = new JButton("1.000.000");
+        withdraw1000Button.setForeground(Color.WHITE);
+        withdraw1000Button.setBackground(Background.BUTTON_PRIMARY);
+        withdraw1000Button.setBounds(Background.ATM_BUTTON_LEFT_START_X, Background.getPositionY(Background.ATM_BUTTON_START_Y, 1), 150, Background.ATM_BUTTON_HEIGHT);
+        withdraw1000Button.addActionListener(this);
+        add(withdraw1000Button);
+
+        withdraw2000Button = new JButton("2.000.000");
+        withdraw2000Button.setForeground(Color.WHITE);
+        withdraw2000Button.setBackground(Background.BUTTON_PRIMARY);
+        withdraw2000Button.setBounds(Background.ATM_BUTTON_RIGHT_START_X, Background.getPositionY(Background.ATM_BUTTON_START_Y, 1), 150, Background.ATM_BUTTON_HEIGHT);
+        withdraw2000Button.addActionListener(this);
+        add(withdraw2000Button);
+
+        withdraw500Button = new JButton("5000.000");
+        withdraw500Button.setForeground(Color.WHITE);
+        withdraw500Button.setBackground(Background.BUTTON_PRIMARY);
+        withdraw500Button.setBounds(Background.ATM_BUTTON_LEFT_START_X, Background.getPositionY(Background.ATM_BUTTON_START_Y, 2), 150, Background.ATM_BUTTON_HEIGHT);
+        withdraw500Button.addActionListener(this);
+        add(withdraw500Button);
+
+        withdraw5000Button = new JButton("5.000.000");
+        withdraw5000Button.setForeground(Color.WHITE);
+        withdraw5000Button.setBackground(Background.BUTTON_PRIMARY);
+        withdraw5000Button.setBounds(Background.ATM_BUTTON_RIGHT_START_X, Background.getPositionY(Background.ATM_BUTTON_START_Y, 2), 150, Background.ATM_BUTTON_HEIGHT);
+        withdraw5000Button.addActionListener(this);
+        add(withdraw5000Button);
+
+        backButton = new JButton("Quay lại");
+        backButton.setForeground(Color.WHITE);
+        backButton.setBackground(Background.BUTTON_WARNING);
+        backButton.setBounds(Background.ATM_BUTTON_LEFT_START_X, Background.getPositionY(Background.ATM_BUTTON_START_Y, 3), 150, Background.ATM_BUTTON_HEIGHT);
+        backButton.addActionListener(this);
+        add(backButton);
+
+        ImageIcon atmBackgroundRaw = new ImageIcon(ClassLoader.getSystemResource("images/backgrounds/atm-machine.png"));
+        Image atmImage = atmBackgroundRaw.getImage().getScaledInstance(Background.BACKGROUND_WIDTH, Background.BACKGROUND_HEIGHT, Image.SCALE_DEFAULT);
+        ImageIcon atmBackgroundImage = new ImageIcon(atmImage);
+
+        backgroundLabel = new JLabel(atmBackgroundImage);
+        backgroundLabel.setBounds(0, 0, Background.BACKGROUND_WIDTH, Background.BACKGROUND_HEIGHT);
+        add(backgroundLabel);
+
         setVisible(true);
 
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == b7) {
+        if (e.getSource() == backButton) {
             setVisible(false);
             new Home(this.pinCode);
         } else {
@@ -93,7 +107,7 @@ public class FastCash extends JFrame implements ActionListener {
             Connector connector = new Connector();
             Date date = new Date();
             try {
-                ResultSet resultSet = connector.statement.executeQuery("select * from bank where pinCode = '" + this.pinCode + "'");
+                ResultSet resultSet = connector.statement.executeQuery("select * from bank where pin_code = '" + this.pinCode + "'");
                 int balance = 0;
                 while (resultSet.next()) {
                     if (resultSet.getString("type").equals("Deposit")) {
@@ -103,21 +117,19 @@ public class FastCash extends JFrame implements ActionListener {
                     }
                 }
 
-                if (e.getSource() != b7 && balance < Integer.parseInt(amount)) {
+                if (e.getSource() != backButton && balance < Integer.parseInt(amount)) {
                     JOptionPane.showMessageDialog(null, "Insufficient Balance");
                     return;
                 }
 
-                connector.statement.executeUpdate("insert into bank values('" + this.pinCode + "','" + date + "', 'withdrawl', '" + amount + "')");
-                JOptionPane.showMessageDialog(null, "Rs. " + amount + " Debited Successfully");
-            } catch (Exception E) {
-                E.printStackTrace();
+                connector.statement.executeUpdate("insert into bank values('" + this.pinCode + "','" + date + "', 'withdraw', '" + amount + "')");
+                JOptionPane.showMessageDialog(null, "Vnđ " + amount + " Debited Successfully");
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
             setVisible(false);
             new Home(this.pinCode);
         }
-
-
     }
 
     public static void main(String[] args) {

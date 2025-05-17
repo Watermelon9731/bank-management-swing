@@ -1,77 +1,82 @@
 package bank.management.system;
 
+import bank.management.system.constants.Background;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Pin extends JFrame implements ActionListener {
-    JButton b1, b2;
-    JPasswordField p1, p2;
+    JLabel backgroundLabel, headingLabel, newPinLabel, confirmPinLabel;
+    JButton confirmButton, backButton;
+    JPasswordField pinCodePasswordField, pinCodeConfirmPasswordField;
     String pinCode;
 
     Pin(String pinCode) {
         this.pinCode = pinCode;
 
-        ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("images/backgrounds/atm.png"));
-        Image i2 = i1.getImage().getScaledInstance(1550, 830, Image.SCALE_DEFAULT);
-        ImageIcon i3 = new ImageIcon(i2);
-        JLabel l3 = new JLabel(i3);
-        l3.setBounds(0, 0, 1550, 830);
-        add(l3);
-
-        JLabel label1 = new JLabel("CHANGE YOUR PIN");
-        label1.setForeground(Color.WHITE);
-        label1.setFont(new Font("System", Font.BOLD, 16));
-        label1.setBounds(430, 180, 400, 35);
-        l3.add(label1);
-
-
-        JLabel label2 = new JLabel("New PIN: ");
-        label2.setForeground(Color.WHITE);
-        label2.setFont(new Font("System", Font.BOLD, 16));
-        label2.setBounds(430, 220, 150, 35);
-        l3.add(label2);
-
-        p1 = new JPasswordField();
-        p1.setBackground(new Color(65, 125, 128));
-        p1.setForeground(Color.WHITE);
-        p1.setBounds(600, 220, 180, 25);
-        p1.setFont(new Font("Raleway", Font.BOLD, 22));
-        l3.add(p1);
-
-        JLabel label3 = new JLabel("Re-Enter New PIN: ");
-        label3.setForeground(Color.WHITE);
-        label3.setFont(new Font("System", Font.BOLD, 16));
-        label3.setBounds(430, 250, 400, 35);
-        l3.add(label3);
-
-        p2 = new JPasswordField();
-        p2.setBackground(new Color(65, 125, 128));
-        p2.setForeground(Color.WHITE);
-        p2.setBounds(600, 255, 180, 25);
-        p2.setFont(new Font("Raleway", Font.BOLD, 22));
-        l3.add(p2);
-
-
-        b1 = new JButton("CHANGE");
-        b1.setBounds(700, 362, 150, 35);
-        b1.setBackground(new Color(65, 125, 128));
-        b1.setForeground(Color.WHITE);
-        b1.addActionListener(this);
-        l3.add(b1);
-
-        b2 = new JButton("BACK");
-        b2.setBounds(700, 406, 150, 35);
-        b2.setBackground(new Color(65, 125, 128));
-        b2.setForeground(Color.WHITE);
-        b2.addActionListener(this);
-        l3.add(b2);
-
-
-        setSize(1550, 1080);
         setLayout(null);
+        setSize(Background.BACKGROUND_WIDTH, Background.BACKGROUND_HEIGHT);
         setLocation(0, 0);
+
+        headingLabel = new JLabel("Đổi mã PIN");
+        headingLabel.setForeground(Color.BLACK);
+        headingLabel.setFont(new Font("Arial", Font.BOLD, Background.HEADING_FONT_SIZE));
+        headingLabel.setBounds(0, 180, Background.BACKGROUND_WIDTH, 35);
+        headingLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        add(headingLabel);
+
+
+        newPinLabel = new JLabel("Mã PIN mới: ");
+        newPinLabel.setForeground(Color.BLACK);
+        newPinLabel.setFont(new Font("System", Font.BOLD, 16));
+        newPinLabel.setBounds(Background.ATM_BUTTON_LEFT_START_X + 20, 230, 150, Background.ATM_BUTTON_HEIGHT);
+        add(newPinLabel);
+
+        pinCodePasswordField = new JPasswordField();
+        pinCodePasswordField.setBackground(Color.LIGHT_GRAY);
+        pinCodePasswordField.setForeground(Color.BLACK);
+        pinCodePasswordField.setBounds(Background.ATM_BUTTON_LEFT_START_X + 170, 230, 180, Background.ATM_BUTTON_HEIGHT);
+        pinCodePasswordField.setFont(new Font("Arial", Font.BOLD, 22));
+        add(pinCodePasswordField);
+
+        confirmPinLabel = new JLabel("Xác nhận mã PIN: ");
+        confirmPinLabel.setForeground(Color.BLACK);
+        confirmPinLabel.setFont(new Font("System", Font.BOLD, 16));
+        confirmPinLabel.setBounds(Background.ATM_BUTTON_LEFT_START_X + 20, 270, 150, Background.ATM_BUTTON_HEIGHT);
+        add(confirmPinLabel);
+
+        pinCodeConfirmPasswordField = new JPasswordField();
+        pinCodeConfirmPasswordField.setBackground(Color.LIGHT_GRAY);
+        pinCodeConfirmPasswordField.setForeground(Color.BLACK);
+        pinCodeConfirmPasswordField.setBounds(Background.ATM_BUTTON_LEFT_START_X + 170, 270, 180, Background.ATM_BUTTON_HEIGHT);
+        pinCodeConfirmPasswordField.setFont(new Font("Arial", Font.BOLD, Background.ATM_BUTTON_HEIGHT));
+        add(pinCodeConfirmPasswordField);
+
+
+        confirmButton = new JButton("Đổi mã PIN");
+        confirmButton.setBounds(Background.ATM_BUTTON_RIGHT_START_X, Background.getPositionY(Background.ATM_BUTTON_START_Y, 2), 150, Background.ATM_BUTTON_HEIGHT);
+        confirmButton.setBackground(Background.BUTTON_PRIMARY);
+        confirmButton.setForeground(Color.WHITE);
+        confirmButton.addActionListener(this);
+        add(confirmButton);
+
+        backButton = new JButton("Quay lại");
+        backButton.setBounds(Background.ATM_BUTTON_RIGHT_START_X, Background.getPositionY(Background.ATM_BUTTON_START_Y, 3), 150, Background.ATM_BUTTON_HEIGHT);
+        backButton.setBackground(Background.BUTTON_WARNING);
+        backButton.setForeground(Color.WHITE);
+        backButton.addActionListener(this);
+        add(backButton);
+
+        ImageIcon atmBackgroundRaw = new ImageIcon(ClassLoader.getSystemResource("images/backgrounds/atm-machine.png"));
+        Image atmImage = atmBackgroundRaw.getImage().getScaledInstance(Background.BACKGROUND_WIDTH, Background.BACKGROUND_HEIGHT, Image.SCALE_DEFAULT);
+        ImageIcon atmBackgroundImage = new ImageIcon(atmImage);
+
+        backgroundLabel = new JLabel(atmBackgroundImage);
+        backgroundLabel.setBounds(0, 0, Background.BACKGROUND_WIDTH, Background.BACKGROUND_HEIGHT);
+        add(backgroundLabel);
+
         setVisible(true);
     }
 
@@ -80,37 +85,37 @@ public class Pin extends JFrame implements ActionListener {
 
         try {
 
-            String pin1 = p1.getText();
-            String pin2 = p2.getText();
+            String newPin = pinCodePasswordField.getText();
+            String confirmPin = pinCodeConfirmPasswordField.getText();
 
-            if (!pin1.equals(pin2)) {
+            if (!newPin.equals(confirmPin)) {
                 JOptionPane.showMessageDialog(null, "Entered PIN does not match");
                 return;
             }
-            if (e.getSource() == b1) {
-                if (p1.getText().equals("")) {
+            if (e.getSource() == confirmButton) {
+                if (pinCodePasswordField.getText().equals("")) {
                     JOptionPane.showMessageDialog(null, "Enter New PIN");
                     return;
                 }
-                if (p2.getText().equals("")) {
+                if (pinCodeConfirmPasswordField.getText().equals("")) {
                     JOptionPane.showMessageDialog(null, "Re-Enter New PIN");
                     return;
                 }
 
                 Connector connector = new Connector();
-                String q1 = "update bank set pin = '" + pin1 + "' where pin = '" + pinCode + "'";
-                String q2 = "update login set pin = '" + pin1 + "' where pin = '" + pinCode + "'";
-                String q3 = "update signupthree set pin = '" + pin1 + "' where pin = '" + pinCode + "'";
+                String updateBankQuery = "update bank set pin_code = '" + newPin + "' where pin_code = '" + pinCode + "'";
+                String updateLoginQuery = "update login set pin_code = '" + newPin + "' where pin = '" + pinCode + "'";
+                String updateSignupThird = "update signupthree set pin_code = '" + newPin + "' where pin_code = '" + pinCode + "'";
 
-                connector.statement.executeUpdate(q1);
-                connector.statement.executeUpdate(q2);
-                connector.statement.executeUpdate(q3);
+                connector.statement.executeUpdate(updateBankQuery);
+                connector.statement.executeUpdate(updateLoginQuery);
+                connector.statement.executeUpdate(updateSignupThird);
 
                 JOptionPane.showMessageDialog(null, "PIN changed successfully");
                 setVisible(false);
                 new Home(this.pinCode);
 
-            } else if (e.getSource() == b2) {
+            } else if (e.getSource() == backButton) {
                 new Home(this.pinCode);
                 setVisible(false);
             }

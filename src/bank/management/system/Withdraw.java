@@ -1,5 +1,7 @@
 package bank.management.system;
 
+import bank.management.system.constants.Background;
+
 import javax.swing.*;
 import java.awt.event.ActionListener;
 
@@ -11,96 +13,132 @@ import java.sql.ResultSet;
 import java.util.Date;
 
 public class Withdraw extends JFrame implements ActionListener {
-    String pinCode;
-    TextField textField;
+    JLabel backgroundLabel, headingLabel, noticeLabel;
+    JButton withdraw1500Button, withdraw1000Button, withdraw300Button, withdraw2000Button, withdraw500Button, withdraw5000Button, backButton, customWithdrawButton;
 
-    JButton b1, b2;
+    String pinCode;
 
     Withdraw(String pinCode) {
         this.pinCode = pinCode;
-        ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("images/backgrounds/atm.png"));
-        Image i2 = i1.getImage().getScaledInstance(1550, 830, Image.SCALE_DEFAULT);
-        ImageIcon i3 = new ImageIcon(i2);
-        JLabel l3 = new JLabel(i3);
-        l3.setBounds(0, 0, 1550, 830);
-        add(l3);
-
-        JLabel label1 = new JLabel("MAXIMUM WITHDRAWAL IS RS.10,000");
-        label1.setForeground(Color.WHITE);
-        label1.setFont(new Font("System", Font.BOLD, 16));
-        label1.setBounds(460, 180, 700, 35);
-        l3.add(label1);
-
-        JLabel label2 = new JLabel("PLEASE ENTER YOUR AMOUNT");
-        label2.setForeground(Color.WHITE);
-        label2.setFont(new Font("System", Font.BOLD, 16));
-        label2.setBounds(460, 220, 400, 35);
-        l3.add(label2);
-
-
-        textField = new TextField();
-        textField.setBackground(new Color(65, 125, 128));
-        textField.setForeground(Color.WHITE);
-        textField.setBounds(460, 260, 320, 25);
-        textField.setFont(new Font("Arial", Font.BOLD, 22));
-        l3.add(textField);
-
-        b1 = new JButton("WITHDRAW");
-        b1.setBounds(700, 362, 150, 35);
-        b1.setBackground(new Color(65, 125, 128));
-        b1.setForeground(Color.WHITE);
-        b1.addActionListener(this);
-        l3.add(b1);
-
-        b2 = new JButton("BACK");
-        b2.setBounds(700, 406, 150, 35);
-        b2.setBackground(new Color(65, 125, 128));
-        b2.setForeground(Color.WHITE);
-        b2.addActionListener(this);
-        l3.add(b2);
 
         setLayout(null);
-        setSize(1550, 1080);
+        setSize(Background.BACKGROUND_WIDTH, Background.BACKGROUND_HEIGHT);
         setLocation(0, 0);
+
+        headingLabel = new JLabel("Nhập số tiền cần rút");
+        headingLabel.setForeground(Color.BLACK);
+        headingLabel.setFont(new Font("Arial", Font.BOLD, Background.HEADING_FONT_SIZE));
+        headingLabel.setBounds(0, 180, Background.BACKGROUND_WIDTH, 35);
+        headingLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        add(headingLabel);
+
+        noticeLabel = new JLabel("Ngân hàng sẽ thu phí chủ thẻ khi giao dịch tại ATM");
+        noticeLabel.setForeground(Color.BLACK);
+        noticeLabel.setFont(new Font("Arial", Font.BOLD, Background.DETAIL_FONT_SIZE));
+        noticeLabel.setBounds(0, 230, Background.BACKGROUND_WIDTH, 35);
+        noticeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        add(noticeLabel);
+
+        withdraw1500Button = new JButton("1.500.000");
+        withdraw1500Button.setForeground(Color.WHITE);
+        withdraw1500Button.setBackground(Background.BUTTON_PRIMARY);
+        withdraw1500Button.setBounds(Background.ATM_BUTTON_LEFT_START_X, Background.ATM_BUTTON_START_Y, 150, Background.ATM_BUTTON_HEIGHT);
+        withdraw1500Button.addActionListener(this);
+        add(withdraw1500Button);
+
+        withdraw300Button = new JButton("300.000");
+        withdraw300Button.setForeground(Color.WHITE);
+        withdraw300Button.setBackground(Background.BUTTON_PRIMARY);
+        withdraw300Button.setBounds(Background.ATM_BUTTON_RIGHT_START_X, Background.ATM_BUTTON_START_Y, 150, Background.ATM_BUTTON_HEIGHT);
+        withdraw300Button.addActionListener(this);
+        add(withdraw300Button);
+
+        withdraw1000Button = new JButton("1.000.000");
+        withdraw1000Button.setForeground(Color.WHITE);
+        withdraw1000Button.setBackground(Background.BUTTON_PRIMARY);
+        withdraw1000Button.setBounds(Background.ATM_BUTTON_LEFT_START_X, Background.getPositionY(Background.ATM_BUTTON_START_Y, 1), 150, Background.ATM_BUTTON_HEIGHT);
+        withdraw1000Button.addActionListener(this);
+        add(withdraw1000Button);
+
+        withdraw2000Button = new JButton("2.000.000");
+        withdraw2000Button.setForeground(Color.WHITE);
+        withdraw2000Button.setBackground(Background.BUTTON_PRIMARY);
+        withdraw2000Button.setBounds(Background.ATM_BUTTON_RIGHT_START_X, Background.getPositionY(Background.ATM_BUTTON_START_Y, 1), 150, Background.ATM_BUTTON_HEIGHT);
+        withdraw2000Button.addActionListener(this);
+        add(withdraw2000Button);
+
+        withdraw500Button = new JButton("5000.000");
+        withdraw500Button.setForeground(Color.WHITE);
+        withdraw500Button.setBackground(Background.BUTTON_PRIMARY);
+        withdraw500Button.setBounds(Background.ATM_BUTTON_LEFT_START_X, Background.getPositionY(Background.ATM_BUTTON_START_Y, 2), 150, Background.ATM_BUTTON_HEIGHT);
+        withdraw500Button.addActionListener(this);
+        add(withdraw500Button);
+
+        withdraw5000Button = new JButton("5.000.000");
+        withdraw5000Button.setForeground(Color.WHITE);
+        withdraw5000Button.setBackground(Background.BUTTON_PRIMARY);
+        withdraw5000Button.setBounds(Background.ATM_BUTTON_RIGHT_START_X, Background.getPositionY(Background.ATM_BUTTON_START_Y, 2), 150, Background.ATM_BUTTON_HEIGHT);
+        withdraw5000Button.addActionListener(this);
+        add(withdraw5000Button);
+
+        customWithdrawButton = new JButton("Số khác");
+        customWithdrawButton.setForeground(Color.WHITE);
+        customWithdrawButton.setBackground(Background.BUTTON_WARNING);
+        customWithdrawButton.setBounds(Background.ATM_BUTTON_LEFT_START_X, Background.getPositionY(Background.ATM_BUTTON_START_Y, 3), 150, Background.ATM_BUTTON_HEIGHT);
+        customWithdrawButton.addActionListener(this);
+        add(customWithdrawButton);
+
+        backButton = new JButton("Quay lại");
+        backButton.setForeground(Color.WHITE);
+        backButton.setBackground(Background.BUTTON_WARNING);
+        backButton.setBounds(Background.ATM_BUTTON_LEFT_START_X, Background.getPositionY(Background.ATM_BUTTON_START_Y, 3), 150, Background.ATM_BUTTON_HEIGHT);
+        backButton.addActionListener(this);
+        add(backButton);
+
+        ImageIcon atmBackgroundRaw = new ImageIcon(ClassLoader.getSystemResource("images/backgrounds/atm-machine.png"));
+        Image atmImage = atmBackgroundRaw.getImage().getScaledInstance(Background.BACKGROUND_WIDTH, Background.BACKGROUND_HEIGHT, Image.SCALE_DEFAULT);
+        ImageIcon atmBackgroundImage = new ImageIcon(atmImage);
+
+        backgroundLabel = new JLabel(atmBackgroundImage);
+        backgroundLabel.setBounds(0, 0, Background.BACKGROUND_WIDTH, Background.BACKGROUND_HEIGHT);
+        add(backgroundLabel);
+
         setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == b1) {
+        if (e.getSource() == backButton) {
+            setVisible(false);
+            new Home(this.pinCode);
+        } else if (e.getSource() == customWithdrawButton) {
+            setVisible(false);
+            new CustomWithdraw(this.pinCode);
+        } else {
+            String amount = ((JButton) e.getSource()).getText().substring(4);
+            Connector connector = new Connector();
+            Date date = new Date();
             try {
-                String amount = textField.getText();
-                Date date = new Date();
-                if (textField.getText().equals("")) {
-                    JOptionPane.showMessageDialog(null, "Please enter the Amount you want to withdraw");
-                } else {
-                    Connector connector = new Connector();
-                    ResultSet resultSet = connector.statement.executeQuery("select * from bank where pinCode = '" + pinCode + "'");
-                    int balance = 0;
-                    while (resultSet.next()) {
-                        if (resultSet.getString("type").equals("Deposit")) {
-                            balance += Integer.parseInt(resultSet.getString("amount"));
-                        } else {
-                            balance -= Integer.parseInt(resultSet.getString("amount"));
-                        }
+                ResultSet resultSet = connector.statement.executeQuery("select * from bank where pin_code = '" + this.pinCode + "'");
+                int balance = 0;
+                while (resultSet.next()) {
+                    if (resultSet.getString("type").equals("Deposit")) {
+                        balance += Integer.parseInt(resultSet.getString("amount"));
+                    } else {
+                        balance -= Integer.parseInt(resultSet.getString("amount"));
                     }
-                    if (balance < Integer.parseInt(amount)) {
-                        JOptionPane.showMessageDialog(null, "Insufficient Balance");
-                        return;
-                    }
-
-                    connector.statement.executeUpdate("insert into bank values('" + pinCode + "', '" + date + "', 'Withdrawl', '" + amount + "' )");
-                    JOptionPane.showMessageDialog(null, "Rs. " + amount + " Debited Successfully");
-                    setVisible(false);
-                    new Home(this.pinCode);
-
                 }
+
+                if (e.getSource() != backButton && balance < Integer.parseInt(amount)) {
+                    JOptionPane.showMessageDialog(null, "Insufficient Balance");
+                    return;
+                }
+
+                connector.statement.executeUpdate("insert into bank values('" + this.pinCode + "','" + date + "', 'withdraw', '" + amount + "')");
+                JOptionPane.showMessageDialog(null, "Vnđ " + amount + " Debited Successfully");
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-        } else if (e.getSource() == b2) {
-            setVisible(false);
-            new Home(this.pinCode);
         }
     }
 

@@ -1,5 +1,7 @@
 package bank.management.system;
 
+import bank.management.system.constants.Background;
+
 import java.awt.*;
 import java.sql.ResultSet;
 import javax.swing.*;
@@ -8,42 +10,53 @@ import java.awt.event.ActionListener;
 
 public class BalanceInquiry extends JFrame implements ActionListener {
     String pinCode;
-    JLabel label2;
-    JButton b1;
+
+    JLabel backgroundLabel, headingLabel ,balanceInquiryLabel;
+    TextField balanceInquiryTextField;
+    JButton depositButton, backButton;
 
     BalanceInquiry(String pinCode) {
         this.pinCode = pinCode;
 
-        ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icon/atm2.png"));
-        Image i2 = i1.getImage().getScaledInstance(1550, 830, Image.SCALE_DEFAULT);
-        ImageIcon i3 = new ImageIcon(i2);
-        JLabel l3 = new JLabel(i3);
-        l3.setBounds(0, 0, 1550, 830);
-        add(l3);
+        setLayout(null);
+        setSize(Background.BACKGROUND_WIDTH, Background.BACKGROUND_HEIGHT);
+        setLocation(0, 0);
 
-        JLabel label1 = new JLabel("Your Current Balance is Rs ");
-        label1.setForeground(Color.WHITE);
-        label1.setFont(new Font("Arial", Font.BOLD, 16));
-        label1.setBounds(430, 180, 700, 35);
-        l3.add(label1);
+        headingLabel = new JLabel("Số dư tài khoản hiện tại");
+        headingLabel.setForeground(Color.BLACK);
+        headingLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        headingLabel.setBounds(0, 180, Background.BACKGROUND_WIDTH, 35);
+        headingLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        add(headingLabel);
 
-        label2 = new JLabel();
-        label2.setForeground(Color.WHITE);
-        label2.setFont(new Font("Arial", Font.BOLD, 16));
-        label2.setBounds(430, 220, 400, 35);
-        l3.add(label2);
+        balanceInquiryLabel = new JLabel("");
+        balanceInquiryLabel.setForeground(Color.BLACK);
+        balanceInquiryLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        balanceInquiryLabel.setBounds(0, 230, Background.BACKGROUND_WIDTH, 40);
+        balanceInquiryLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        add(balanceInquiryLabel);
 
-        b1 = new JButton("Back");
-        b1.setBounds(700, 406, 150, 35);
-        b1.setBackground(new Color(65, 125, 128));
-        b1.setForeground(Color.WHITE);
-        b1.addActionListener(this);
-        l3.add(b1);
+        backButton = new JButton("Quay lại");
+        backButton.setBounds(Background.ATM_BUTTON_RIGHT_START_X, Background.ATM_BUTTON_START_Y + 52, 150, Background.ATM_BUTTON_HEIGHT);
+        backButton.setBackground(new Color(65, 125, 128));
+        backButton.setForeground(Color.WHITE);
+        backButton.addActionListener(this);
+        add(backButton);
+
+        ImageIcon atmBackgroundRaw = new ImageIcon(ClassLoader.getSystemResource("images/backgrounds/atm-machine.png"));
+        Image atmImage = atmBackgroundRaw.getImage().getScaledInstance(Background.BACKGROUND_WIDTH, Background.BACKGROUND_HEIGHT, Image.SCALE_DEFAULT);
+        ImageIcon atmBackgroundImage = new ImageIcon(atmImage);
+
+        backgroundLabel = new JLabel(atmBackgroundImage);
+        backgroundLabel.setBounds(0, 0, Background.BACKGROUND_WIDTH, Background.BACKGROUND_HEIGHT);
+        add(backgroundLabel);
+
+        setVisible(true);
 
         int balance = 0;
         try {
             Connector connector = new Connector();
-            ResultSet resultSet = connector.statement.executeQuery("Select * from bank where pinCode = '" + pinCode + "'");
+            ResultSet resultSet = connector.statement.executeQuery("Select * from bank where pin_code = '" + pinCode + "'");
             while (resultSet.next()) {
                 if (resultSet.getString("type").equals("Deposit")) {
                     balance += Integer.parseInt(resultSet.getString("amount"));
@@ -55,7 +68,7 @@ public class BalanceInquiry extends JFrame implements ActionListener {
             e.printStackTrace();
         }
 
-        label2.setText("" + balance);
+        balanceInquiryLabel.setText("" + balance);
 
         setLayout(null);
         setSize(1550, 1080);

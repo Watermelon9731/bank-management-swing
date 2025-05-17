@@ -1,5 +1,6 @@
 package bank.management.system;
 
+import bank.management.system.constants.Background;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
@@ -10,53 +11,56 @@ import java.sql.SQLException;
 import java.util.Date;
 
 public class Deposit extends JFrame implements ActionListener {
-    String pin;
+    String pinCode;
 
     JLabel backgroundLabel, amountLabel;
     TextField amountTextField;
     JButton depositButton, backButton;
 
-    Deposit(String pin) {
-        this.pin = pin;
-
-        ImageIcon atmBackgroundRaw = new ImageIcon(ClassLoader.getSystemResource("images/backgrounds/atm.png"));
-        Image atmImage = atmBackgroundRaw.getImage().getScaledInstance(1550,830,Image.SCALE_DEFAULT);
-        ImageIcon backgroundImage = new ImageIcon(atmImage);
-
-        backgroundLabel = new JLabel(backgroundImage);
-        backgroundLabel.setBounds(0,0,1550,830);
-        add(backgroundLabel);
-
-        amountLabel = new JLabel("ENTER AMOUNT YOU WANT TO DEPOSIT");
-        amountLabel.setForeground(Color.WHITE);
-        amountLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        amountLabel.setBounds(460,180,400,35);
-        backgroundLabel.add(amountLabel);
-
-        amountTextField = new TextField();
-        amountTextField.setBackground(new Color(65,125,128));
-        amountTextField.setForeground(Color.WHITE);
-        amountTextField.setBounds(460,230,320,25);
-        amountTextField.setFont(new Font("Arial", Font.BOLD,22));
-        backgroundLabel.add(amountTextField);
-
-        depositButton = new JButton("DEPOSIT");
-        depositButton.setBounds(700,362,150,35);
-        depositButton.setBackground(new Color(65,125,128));
-        depositButton.setForeground(Color.WHITE);
-        depositButton.addActionListener(this);
-        backgroundLabel.add(depositButton);
-
-        backButton = new JButton("BACK");
-        backButton.setBounds(700,406,150,35);
-        backButton.setBackground(new Color(65,125,128));
-        backButton.setForeground(Color.WHITE);
-        backButton.addActionListener(this);
-        backgroundLabel.add(backButton);
+    Deposit(String pinCode) {
+        this.pinCode = pinCode;
 
         setLayout(null);
-        setSize(1550,1080);
-        setLocation(0,0);
+        setSize(Background.BACKGROUND_WIDTH, Background.BACKGROUND_HEIGHT);
+        setLocation(0, 0);
+
+        amountLabel = new JLabel("Nhập số tiền cần chuyển");
+        amountLabel.setForeground(Color.BLACK);
+        amountLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        amountLabel.setBounds(0, 180, Background.BACKGROUND_WIDTH, 35);
+        amountLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        add(amountLabel);
+
+        amountTextField = new TextField();
+        amountTextField.setBackground(new Color(65, 125, 128));
+        amountTextField.setBackground(Color.LIGHT_GRAY);
+        amountTextField.setForeground(Color.BLACK);
+        amountTextField.setBounds(Background.ATM_BUTTON_LEFT_START_X + 60, 230, 320, 42);
+        amountTextField.setFont(new Font("Arial", Font.BOLD, 26));
+        add(amountTextField);
+
+        depositButton = new JButton("Chuyển khoản");
+        depositButton.setBounds(Background.ATM_BUTTON_RIGHT_START_X, Background.ATM_BUTTON_START_Y, 150, Background.ATM_BUTTON_HEIGHT);
+        depositButton.setBackground(new Color(65, 125, 128));
+        depositButton.setForeground(Color.WHITE);
+        depositButton.addActionListener(this);
+        add(depositButton);
+
+        backButton = new JButton("Quay lại");
+        backButton.setBounds(Background.ATM_BUTTON_RIGHT_START_X, Background.ATM_BUTTON_START_Y + 52, 150, Background.ATM_BUTTON_HEIGHT);
+        backButton.setBackground(new Color(65, 125, 128));
+        backButton.setForeground(Color.WHITE);
+        backButton.addActionListener(this);
+        add(backButton);
+
+        ImageIcon atmBackgroundRaw = new ImageIcon(ClassLoader.getSystemResource("images/backgrounds/atm-machine.png"));
+        Image atmImage = atmBackgroundRaw.getImage().getScaledInstance(Background.BACKGROUND_WIDTH, Background.BACKGROUND_HEIGHT, Image.SCALE_DEFAULT);
+        ImageIcon atmBackgroundImage = new ImageIcon(atmImage);
+
+        backgroundLabel = new JLabel(atmBackgroundImage);
+        backgroundLabel.setBounds(0, 0, Background.BACKGROUND_WIDTH, Background.BACKGROUND_HEIGHT);
+        add(backgroundLabel);
+
         setVisible(true);
     }
 
@@ -68,18 +72,24 @@ public class Deposit extends JFrame implements ActionListener {
 
             if (e.getSource() == depositButton) {
                 if (amount.equals("")) {
-                    JOptionPane.showMessageDialog(null, "Please enter the amount you want to deposit");
+                    JOptionPane.showMessageDialog(null, "Vui lòng nhập số tiền muốn chuyển");
                 } else {
-                    Connector connector = new Connector();
-                    String addQuery = "insert into bank values('"+this.pin+"', '"+date+"', 'Deposit', '"+amount+"')";
-                    connector.statement.executeUpdate(addQuery);
-                    JOptionPane.showMessageDialog(null, "Deposited successfully '"+amount+"'");
-                    new Home(this.pin);
-                    setVisible(false);
+                    try {
+                        Integer.parseInt(amount);
+                        Connector connector = new Connector();
+                        String addQuery = "insert into bank values('" + this.pinCode + "', '" + date + "', 'Deposit', '" + amount + "')";
+                        connector.statement.executeUpdate(addQuery);
+                        JOptionPane.showMessageDialog(null, "Chuyển khoản thành công '" + amount + "'");
+                        new Home(this.pinCode);
+                        setVisible(false);
+                    } catch (NumberFormatException numberException) {
+                        JOptionPane.showMessageDialog(null, "Giá trị chuyển khoản là số");
+                    }
+
                 }
             } else if (e.getSource() == backButton) {
                 setVisible(false);
-                new Home(this.pin);
+                new Home(this.pinCode);
             }
         } catch (Exception ex) {
             ex.printStackTrace();

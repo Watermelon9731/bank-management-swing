@@ -1,5 +1,7 @@
 package bank.management.system;
 
+import bank.management.system.constants.Background;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -7,87 +9,114 @@ import java.awt.event.ActionEvent;
 
 public class Home extends JFrame implements ActionListener {
     String pinCode;
-    JLabel backgroundLabel;
+    JLabel bankIconLabel, backgroundLabel;
 
     JButton depositButton, cashWithdrawButton, fastCashButton, pinChangeButton, balanceInquiryButton, exitButton;
 
+    int bankIconWidth = 80, bankIconHeight = 80;
+
+    int leftStartX = Background.ATM_BUTTON_LEFT_START_X;
+    int rightStartX = Background.ATM_BUTTON_RIGHT_START_X;
+
+    int buttonStartY = Background.ATM_BUTTON_START_Y;
+    int buttonHeight = Background.ATM_BUTTON_HEIGHT;
+
+    public int getPositionY(int level) {
+        return Background.getPositionY(this.buttonStartY, level);
+    }
+
     Home(String pinCode) {
+        super("Bank Management System");
         this.pinCode = pinCode;
-        ImageIcon atmBackgroundRaw = new ImageIcon(ClassLoader.getSystemResource("images/backgrounds/atm.png"));
-        Image atmImage = atmBackgroundRaw.getImage().getScaledInstance(1550,830,Image.SCALE_DEFAULT);
-        ImageIcon backgroundImage = new ImageIcon(atmImage);
-
-        backgroundLabel = new JLabel(backgroundImage);
-        backgroundLabel.setBounds(0,0,1550,830);
-        add(backgroundLabel);
-
-        JLabel label = new JLabel("Please Select Your Transaction");
-        label.setBounds(430,180,700,35);
-        label.setForeground(Color.WHITE);
-        label.setFont(new Font("System",Font.BOLD,28));
-        backgroundLabel.add(label);
-
-        depositButton = new JButton("DEPOSIT");
-        depositButton.setForeground(Color.WHITE);
-        depositButton.setBackground(new Color(65,125,128));
-        depositButton.setBounds(410,274,150,35);
-        depositButton.addActionListener(this);
-        backgroundLabel.add(depositButton);
-
-        cashWithdrawButton = new JButton("CASH WITHDRAW");
-        cashWithdrawButton.setForeground(Color.WHITE);
-        cashWithdrawButton.setBackground(new Color(65,125,128));
-        cashWithdrawButton.setBounds(700,274,150,35);
-        cashWithdrawButton.addActionListener(this);
-        backgroundLabel.add(cashWithdrawButton);
-
-        fastCashButton = new JButton("FAST CASH");
-        fastCashButton.setForeground(Color.WHITE);
-        fastCashButton.setBackground(new Color(65,125,128));
-        fastCashButton.setBounds(410,318,150,35);
-        fastCashButton.addActionListener(this);
-        backgroundLabel.add(fastCashButton);
-
-        pinChangeButton = new JButton("PIN CHANGE");
-        pinChangeButton.setForeground(Color.WHITE);
-        pinChangeButton.setBackground(new Color(65,125,128));
-        pinChangeButton.setBounds(410,362,150,35);
-        pinChangeButton.addActionListener(this);
-        backgroundLabel.add(pinChangeButton);
-
-        balanceInquiryButton = new JButton("BALANCE INQUIRY");
-        balanceInquiryButton.setForeground(Color.WHITE);
-        balanceInquiryButton.setBackground(new Color(65,125,128));
-        balanceInquiryButton.setBounds(700,362,150,35);
-        balanceInquiryButton.addActionListener(this);
-        backgroundLabel.add(balanceInquiryButton);
-
-        exitButton = new JButton("EXIT");
-        exitButton.setForeground(Color.WHITE);
-        exitButton.setBackground(new Color(65,125,128));
-        exitButton.setBounds(700,406,150,35);
-        exitButton.addActionListener(this);
-        backgroundLabel.add(exitButton);
 
         setLayout(null);
-        setSize(1500,1080);
-        setLocation(0,0);
+        setSize(Background.BACKGROUND_WIDTH, Background.BACKGROUND_HEIGHT);
+        setLocation(0, 0);
+
+        ImageIcon bankIconRaw = new ImageIcon(ClassLoader.getSystemResource("images/icons/bank.png"));
+        Image bankIconResizedImage = bankIconRaw.getImage().getScaledInstance(this.bankIconWidth, this.bankIconHeight, Image.SCALE_DEFAULT);
+        ImageIcon bankIcon = new ImageIcon(bankIconResizedImage);
+
+        bankIconLabel = new JLabel(bankIcon);
+        bankIconLabel.setBounds(this.leftStartX + 180, 160, this.bankIconWidth, this.bankIconHeight);
+        add(bankIconLabel);
+
+        JLabel label = new JLabel("Xin vui lòng lựa chọn giao dịch");
+        label.setBounds(0, 250, 840, 35);
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setForeground(Color.BLACK);
+        label.setFont(new Font("Arial", Font.BOLD, 20));
+
+        add(label);
+
+        depositButton = new JButton("Chuyển khoản");
+        depositButton.setForeground(Color.WHITE);
+        depositButton.setBackground(Background.BUTTON_PRIMARY);
+        depositButton.setBounds(this.leftStartX, this.buttonStartY, 150, this.buttonHeight);
+        depositButton.addActionListener(this);
+        add(depositButton);
+
+        cashWithdrawButton = new JButton("Rút tiền");
+        cashWithdrawButton.setForeground(Color.WHITE);
+        cashWithdrawButton.setBackground(Background.BUTTON_PRIMARY);
+        cashWithdrawButton.setBounds(this.rightStartX, this.buttonStartY, 150, this.buttonHeight);
+        cashWithdrawButton.addActionListener(this);
+        add(cashWithdrawButton);
+
+        fastCashButton = new JButton("Tạm ứng");
+        fastCashButton.setForeground(Color.WHITE);
+        fastCashButton.setBackground(Background.BUTTON_PRIMARY);
+        fastCashButton.setBounds(this.leftStartX, this.getPositionY(1), 150, this.buttonHeight);
+        fastCashButton.addActionListener(this);
+        add(fastCashButton);
+
+        pinChangeButton = new JButton("Đổi mã PIN");
+        pinChangeButton.setForeground(Color.WHITE);
+        pinChangeButton.setBackground(Background.BUTTON_PRIMARY);
+        pinChangeButton.setBounds(this.rightStartX, this.getPositionY(1), 150, this.buttonHeight);
+        pinChangeButton.addActionListener(this);
+        add(pinChangeButton);
+
+        balanceInquiryButton = new JButton("Xem số dư");
+        balanceInquiryButton.setForeground(Color.WHITE);
+        balanceInquiryButton.setBackground(Background.BUTTON_PRIMARY);
+        balanceInquiryButton.setBounds(this.leftStartX, this.getPositionY(2), 150, this.buttonHeight);
+        balanceInquiryButton.addActionListener(this);
+        add(balanceInquiryButton);
+
+        exitButton = new JButton("Hủy giao dịch");
+        exitButton.setForeground(Color.WHITE);
+        exitButton.setBackground(Background.BUTTON_WARNING);
+        exitButton.setBounds(this.rightStartX, this.getPositionY(3), 150, this.buttonHeight);
+        exitButton.addActionListener(this);
+        add(exitButton);
+
+        ImageIcon atmBackgroundRaw = new ImageIcon(ClassLoader.getSystemResource("images/backgrounds/atm-machine.png"));
+        Image atmImage = atmBackgroundRaw.getImage().getScaledInstance(Background.BACKGROUND_WIDTH, Background.BACKGROUND_HEIGHT, Image.SCALE_DEFAULT);
+        ImageIcon atmBackgroundImage = new ImageIcon(atmImage);
+
+        backgroundLabel = new JLabel(atmBackgroundImage);
+        backgroundLabel.setBounds(0, 0, Background.BACKGROUND_WIDTH, Background.BACKGROUND_HEIGHT);
+        add(backgroundLabel);
+
         setVisible(true);
-    };
+    }
+
+    ;
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == depositButton) {
             new Deposit(this.pinCode);
             setVisible(false);
-        }else if (e.getSource() == exitButton){
+        } else if (e.getSource() == exitButton) {
             System.exit(0);
         } else if (e.getSource() == cashWithdrawButton) {
             new Withdraw(this.pinCode);
             setVisible(false);
         } else if (e.getSource() == balanceInquiryButton) {
             new BalanceInquiry(this.pinCode);
-            setVisible(false); 
+            setVisible(false);
         } else if (e.getSource() == fastCashButton) {
             new FastCash(this.pinCode);
             setVisible(false);
