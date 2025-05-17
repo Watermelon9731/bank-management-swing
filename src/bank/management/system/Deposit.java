@@ -1,9 +1,13 @@
 package bank.management.system;
 
+import com.toedter.calendar.JDateChooser;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.sql.SQLException;
+import java.util.Date;
 
 public class Deposit extends JFrame implements ActionListener {
     String pin;
@@ -58,7 +62,28 @@ public class Deposit extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        try {
+            String amount = amountTextField.getText();
+            Date date = new Date();
 
+            if (e.getSource() == depositButton) {
+                if (amount.equals("")) {
+                    JOptionPane.showMessageDialog(null, "Please enter the amount you want to deposit");
+                } else {
+                    Connector connector = new Connector();
+                    String addQuery = "insert into bank values('"+this.pin+"', '"+date+"', 'Deposit', '"+amount+"')";
+                    connector.statement.executeUpdate(addQuery);
+                    JOptionPane.showMessageDialog(null, "Deposited successfully '"+amount+"'");
+                    new Home(this.pin);
+                    setVisible(false);
+                }
+            } else if (e.getSource() == backButton) {
+                setVisible(false);
+                new Home(this.pin);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {

@@ -2,7 +2,6 @@ package bank.management.system;
 
 import bank.management.system.constants.Background;
 import com.toedter.calendar.JDateChooser;
-import bank.management.system.constants.Background;
 
 import javax.swing.*;
 import java.awt.*;
@@ -147,7 +146,7 @@ public class SignupThird extends JFrame implements ActionListener {
         cancelButton.setFont(new Font("Arial", Font.BOLD, 14));
         cancelButton.setBackground(Color.RED);
         cancelButton.setForeground(Color.WHITE);
-        cancelButton.setBounds(this.formStartX, this.getPositionY(7), 100, this.lineHeight);
+        cancelButton.setBounds(this.formStartX, this.getPositionY(8) - 20, 100, this.lineHeight);
         cancelButton.addActionListener(this);
         add(cancelButton);
 
@@ -155,7 +154,7 @@ public class SignupThird extends JFrame implements ActionListener {
         submitButton.setFont(new Font("Arial", Font.BOLD, 14));
         submitButton.setBackground(Color.BLUE);
         submitButton.setForeground(Color.WHITE);
-        submitButton.setBounds(this.formStartX + 100, this.getPositionY(7), 100, this.lineHeight);
+        submitButton.setBounds(this.formStartX + 130, this.getPositionY(8) - 20, 100, this.lineHeight);
         submitButton.addActionListener(this);
         add(submitButton);
 
