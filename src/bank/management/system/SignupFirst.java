@@ -10,9 +10,9 @@ import java.awt.event.ActionListener;
 import java.util.Random;
 
 public class SignupFirst extends JFrame implements ActionListener {
-    JLabel bankIconLabel, headingLabel, pageNumberLabel, titleLabel, nameLabel, dobLabel, accountLabel, genderLabel, emailLabel, maritalStatusLabel, addressLabel, pinCodeLabel, cityLabel, provinceLabel;
+    JLabel bankIconLabel, headingLabel, pageNumberLabel, titleLabel, nameLabel, dobLabel, accountLabel, genderLabel, emailLabel, maritalStatusLabel, addressLabel, passwordLabel, passwordConfirmLabel, cityLabel, provinceLabel, backgroundImageLabel;
     JTextField nameTextField, accountTextField, emailTextField, addressTextField, cityTextField, provinceTextField;
-    JPasswordField pinCodeTextField, rePinCodeTextField;
+    JPasswordField pinCodeTextField, passwordTextField, passwordConfirmTextField;
     JDateChooser dateChooser;
     JRadioButton maleGenderRadioButton, femaleGenderRadioButton, marriedMaritalStatusRadioButton, unmarriedMaritalStatusRadioButton, otherMaritalStatusRadioButton;
     JButton nextButton;
@@ -20,7 +20,7 @@ public class SignupFirst extends JFrame implements ActionListener {
     Random randomNumber = new Random();
     long fourDigitsId = (randomNumber.nextLong() % 9000L) + 1000L;
 
-    String fourDigitsIdString = " " + Math.abs(fourDigitsId);
+    String fourDigitsIdString = "" + Math.abs(fourDigitsId);
 
     int lineHeight = 40;
     int formStartY = 160;
@@ -46,52 +46,46 @@ public class SignupFirst extends JFrame implements ActionListener {
         add(bankIconLabel);
 
         headingLabel = new JLabel("Application Form No." + fourDigitsIdString);
-        headingLabel.setForeground(Color.BLACK);
+        headingLabel.setForeground(Color.WHITE);
         headingLabel.setFont(new Font("Arial", Font.BOLD, 30));
         headingLabel.setBounds(150, 30, 600, 40);
         add(headingLabel);
 
-        pageNumberLabel = new JLabel("Page 1");
-        pageNumberLabel.setForeground(Color.BLACK);
+        pageNumberLabel = new JLabel("Personal Information - Page 1");
+        pageNumberLabel.setForeground(Color.WHITE);
         pageNumberLabel.setFont(new Font("Arial", Font.BOLD, 22));
         pageNumberLabel.setBounds(150, 70, 600, 40);
         add(pageNumberLabel);
 
-        titleLabel = new JLabel("Personal Information");
-        titleLabel.setForeground(Color.BLACK);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 22));
-        titleLabel.setBounds(25, 120, 600, 40);
-        add(titleLabel);
-
         // Full name field
         nameLabel = new JLabel("Full Name");
-        nameLabel.setForeground(Color.BLACK);
+        nameLabel.setForeground(Color.WHITE);
         nameLabel.setFont(new Font("Arial", Font.BOLD, 22));
         nameLabel.setBounds(this.formStartX, this.formStartY, this.formLabelWidth, this.lineHeight);
         add(nameLabel);
 
         nameTextField = new JTextField();
         nameTextField.setFont(new Font("Arial", Font.BOLD, 16));
-        nameTextField.setForeground(Color.BLACK);
+        nameTextField.setForeground(Color.WHITE);
         nameTextField.setBounds(this.formTextFieldStartX, this.formStartY, this.formTextFieldWidth, this.lineHeight);
         add(nameTextField);
 
         // Account name field
         accountLabel = new JLabel("Account Name");
-        accountLabel.setForeground(Color.BLACK);
+        accountLabel.setForeground(Color.WHITE);
         accountLabel.setFont(new Font("Arial", Font.BOLD, 22));
         accountLabel.setBounds(this.formStartX, this.getPositionY(1), this.formLabelWidth, this.lineHeight);
         add(accountLabel);
 
         accountTextField = new JTextField();
         accountTextField.setFont(new Font("Arial", Font.BOLD, 16));
-        accountTextField.setForeground(Color.BLACK);
+        accountTextField.setForeground(Color.WHITE);
         accountTextField.setBounds(this.formTextFieldStartX, this.getPositionY(1), this.formTextFieldWidth, this.lineHeight);
         add(accountTextField);
 
         // Date of birth field
         dobLabel = new JLabel("Date of Birth");
-        dobLabel.setForeground(Color.BLACK);
+        dobLabel.setForeground(Color.WHITE);
         dobLabel.setFont(new Font("Arial", Font.BOLD, 22));
         dobLabel.setBounds(this.formStartX, this.getPositionY(2), this.formLabelWidth, this.lineHeight);
         add(dobLabel);
@@ -103,19 +97,21 @@ public class SignupFirst extends JFrame implements ActionListener {
 
         // Gender field
         genderLabel = new JLabel("Gender");
-        genderLabel.setForeground(Color.BLACK);
+        genderLabel.setForeground(Color.WHITE);
         genderLabel.setFont(new Font("Arial", Font.BOLD, 22));
         genderLabel.setBounds(this.formStartX, this.getPositionY(3), this.formLabelWidth, this.lineHeight);
         add(genderLabel);
 
         maleGenderRadioButton = new JRadioButton("Male");
         maleGenderRadioButton.setBackground(Background.BACKGROUND_COLOR);
+        maleGenderRadioButton.setForeground(Color.WHITE);
         maleGenderRadioButton.setFont(new Font("Arial", Font.BOLD, 16));
         maleGenderRadioButton.setBounds(this.formTextFieldStartX, this.getPositionY(3), this.formRadioButtonWidth, this.lineHeight);
         add(maleGenderRadioButton);
 
         femaleGenderRadioButton = new JRadioButton("Female");
         femaleGenderRadioButton.setBackground(Background.BACKGROUND_COLOR);
+        femaleGenderRadioButton.setForeground(Color.WHITE);
         femaleGenderRadioButton.setFont(new Font("Arial", Font.BOLD, 16));
         femaleGenderRadioButton.setBounds(this.formTextFieldStartX + this.formRadioButtonWidth, this.getPositionY(3), this.formRadioButtonWidth, this.lineHeight);
         add(femaleGenderRadioButton);
@@ -126,38 +122,38 @@ public class SignupFirst extends JFrame implements ActionListener {
 
         // Email field
         emailLabel = new JLabel("Email Address");
-        emailLabel.setForeground(Color.BLACK);
+        emailLabel.setForeground(Color.WHITE);
         emailLabel.setFont(new Font("Arial", Font.BOLD, 22));
         emailLabel.setBounds(this.formStartX, this.getPositionY(4), this.formLabelWidth, this.lineHeight);
         add(emailLabel);
 
         emailTextField = new JTextField();
         emailTextField.setFont(new Font("Arial", Font.BOLD, 16));
-        emailTextField.setForeground(Color.BLACK);
+        emailTextField.setForeground(Color.WHITE);
         emailTextField.setBounds(this.formTextFieldStartX, this.getPositionY(4), this.formTextFieldWidth, this.lineHeight);
         add(emailTextField);
 
         // Marital field
         maritalStatusLabel = new JLabel("Marital Status");
-        maritalStatusLabel.setForeground(Color.BLACK);
+        maritalStatusLabel.setForeground(Color.WHITE);
         maritalStatusLabel.setFont(new Font("Arial", Font.BOLD, 22));
         maritalStatusLabel.setBounds(this.formStartX, this.getPositionY(5), this.formLabelWidth, this.lineHeight);
         add(maritalStatusLabel);
 
         marriedMaritalStatusRadioButton = new JRadioButton("Married");
-        marriedMaritalStatusRadioButton.setBackground(Background.BACKGROUND_COLOR);
+        marriedMaritalStatusRadioButton.setForeground(Color.WHITE);
         marriedMaritalStatusRadioButton.setFont(new Font("Arial", Font.BOLD, 16));
         marriedMaritalStatusRadioButton.setBounds(this.formTextFieldStartX, this.getPositionY(5), this.formRadioButtonWidth, this.lineHeight);
         add(marriedMaritalStatusRadioButton);
 
         unmarriedMaritalStatusRadioButton = new JRadioButton("Unmarried");
-        unmarriedMaritalStatusRadioButton.setBackground(Background.BACKGROUND_COLOR);
+        unmarriedMaritalStatusRadioButton.setForeground(Color.WHITE);
         unmarriedMaritalStatusRadioButton.setFont(new Font("Arial", Font.BOLD, 16));
         unmarriedMaritalStatusRadioButton.setBounds(this.formTextFieldStartX + this.formRadioButtonWidth, this.getPositionY(5), this.formRadioButtonWidth, this.lineHeight);
         add(unmarriedMaritalStatusRadioButton);
 
         otherMaritalStatusRadioButton = new JRadioButton("Other");
-        otherMaritalStatusRadioButton.setBackground(Background.BACKGROUND_COLOR);
+        otherMaritalStatusRadioButton.setForeground(Color.WHITE);
         otherMaritalStatusRadioButton.setFont(new Font("Arial", Font.BOLD, 16));
         otherMaritalStatusRadioButton.setBounds(this.formTextFieldStartX + this.formRadioButtonWidth * 2, this.getPositionY(5), this.formRadioButtonWidth, this.lineHeight);
         add(otherMaritalStatusRadioButton);
@@ -169,68 +165,68 @@ public class SignupFirst extends JFrame implements ActionListener {
 
         // Address field
         addressLabel = new JLabel("Address");
-        addressLabel.setForeground(Color.BLACK);
+        addressLabel.setForeground(Color.WHITE);
         addressLabel.setFont(new Font("Arial", Font.BOLD, 22));
         addressLabel.setBounds(this.formStartX, this.getPositionY(6), this.formLabelWidth, this.lineHeight);
         add(addressLabel);
 
         addressTextField = new JTextField();
         addressTextField.setFont(new Font("Arial", Font.BOLD, 16));
-        addressTextField.setForeground(Color.BLACK);
+        addressTextField.setForeground(Color.WHITE);
         addressTextField.setBounds(this.formTextFieldStartX, this.getPositionY(6), this.formTextFieldWidth, this.lineHeight);
         add(addressTextField);
 
         // City field
         cityLabel = new JLabel("City");
-        cityLabel.setForeground(Color.BLACK);
+        cityLabel.setForeground(Color.WHITE);
         cityLabel.setFont(new Font("Arial", Font.BOLD, 22));
         cityLabel.setBounds(this.formStartX, this.getPositionY(7), this.formLabelWidth, this.lineHeight);
         add(cityLabel);
 
         cityTextField = new JTextField();
         cityTextField.setFont(new Font("Arial", Font.BOLD, 16));
-        cityTextField.setForeground(Color.BLACK);
+        cityTextField.setForeground(Color.WHITE);
         cityTextField.setBounds(this.formTextFieldStartX, this.getPositionY(7), this.formTextFieldWidth, this.lineHeight);
         add(cityTextField);
 
         // Province field
         provinceLabel = new JLabel("Province");
-        provinceLabel.setForeground(Color.BLACK);
+        provinceLabel.setForeground(Color.WHITE);
         provinceLabel.setFont(new Font("Arial", Font.BOLD, 22));
         provinceLabel.setBounds(this.formStartX, this.getPositionY(8), this.formLabelWidth, this.lineHeight);
         add(provinceLabel);
 
         provinceTextField = new JTextField();
         provinceTextField.setFont(new Font("Arial", Font.BOLD, 16));
-        provinceTextField.setForeground(Color.BLACK);
+        provinceTextField.setForeground(Color.WHITE);
         provinceTextField.setBounds(this.formTextFieldStartX, this.getPositionY(8), this.formTextFieldWidth, this.lineHeight);
         add(provinceTextField);
 
         // Pin code field
-        pinCodeLabel = new JLabel("Pin Code");
-        pinCodeLabel.setForeground(Color.BLACK);
-        pinCodeLabel.setFont(new Font("Arial", Font.BOLD, 22));
-        pinCodeLabel.setBounds(this.formStartX, this.getPositionY(9), this.formLabelWidth, this.lineHeight);
-        add(pinCodeLabel);
+        passwordLabel = new JLabel("Pin Code");
+        passwordLabel.setForeground(Color.WHITE);
+        passwordLabel.setFont(new Font("Arial", Font.BOLD, 22));
+        passwordLabel.setBounds(this.formStartX, this.getPositionY(9), this.formLabelWidth, this.lineHeight);
+        add(passwordLabel);
 
-        pinCodeTextField = new JPasswordField();
-        pinCodeTextField.setFont(new Font("Arial", Font.BOLD, 16));
-        pinCodeTextField.setForeground(Color.BLACK);
-        pinCodeTextField.setBounds(this.formTextFieldStartX, this.getPositionY(9), this.formTextFieldWidth, this.lineHeight);
-        add(pinCodeTextField);
+        passwordTextField = new JPasswordField();
+        passwordTextField.setFont(new Font("Arial", Font.BOLD, 16));
+        passwordTextField.setForeground(Color.WHITE);
+        passwordTextField.setBounds(this.formTextFieldStartX, this.getPositionY(9), this.formTextFieldWidth, this.lineHeight);
+        add(passwordTextField);
 
         // Re-Pin code field
-        pinCodeLabel = new JLabel("Pin Code Confirmation");
-        pinCodeLabel.setForeground(Color.BLACK);
-        pinCodeLabel.setFont(new Font("Arial", Font.BOLD, 22));
-        pinCodeLabel.setBounds(this.formStartX, this.getPositionY(10), this.formLabelWidth, this.lineHeight);
-        add(pinCodeLabel);
+        passwordConfirmLabel = new JLabel("Pin Code Confirmation");
+        passwordConfirmLabel.setForeground(Color.WHITE);
+        passwordConfirmLabel.setFont(new Font("Arial", Font.BOLD, 22));
+        passwordConfirmLabel.setBounds(this.formStartX, this.getPositionY(10), this.formLabelWidth, this.lineHeight);
+        add(passwordConfirmLabel);
 
-        rePinCodeTextField = new JPasswordField();
-        rePinCodeTextField.setFont(new Font("Arial", Font.BOLD, 16));
-        rePinCodeTextField.setForeground(Color.BLACK);
-        rePinCodeTextField.setBounds(this.formTextFieldStartX, this.getPositionY(10), this.formTextFieldWidth, this.lineHeight);
-        add(rePinCodeTextField);
+        passwordConfirmTextField = new JPasswordField();
+        passwordConfirmTextField.setFont(new Font("Arial", Font.BOLD, 16));
+        passwordConfirmTextField.setForeground(Color.WHITE);
+        passwordConfirmTextField.setBounds(this.formTextFieldStartX, this.getPositionY(10), this.formTextFieldWidth, this.lineHeight);
+        add(passwordConfirmTextField);
 
         nextButton = new JButton("Next");
         nextButton.setFont(new Font("Arial", Font.BOLD, 16));
@@ -240,7 +236,14 @@ public class SignupFirst extends JFrame implements ActionListener {
         nextButton.addActionListener(this);
         add(nextButton);
 
-        getContentPane().setBackground(Background.BACKGROUND_COLOR);
+//        getContentPane().setBackground(Background.BACKGROUND_COLOR);
+        ImageIcon backgroundRaw = new ImageIcon(ClassLoader.getSystemResource("images/backgrounds/signup.png"));
+        Image backgroundResizedImage = backgroundRaw.getImage().getScaledInstance(800, 800, Image.SCALE_DEFAULT);
+        ImageIcon backgroundImage = new ImageIcon(backgroundResizedImage);
+        backgroundImageLabel = new JLabel(backgroundImage);
+        backgroundImageLabel.setBounds(0, 0, 800, 800);
+        add(backgroundImageLabel);
+
         setLayout(null);
         setSize(800, 800);
         setLocation(360, 40);

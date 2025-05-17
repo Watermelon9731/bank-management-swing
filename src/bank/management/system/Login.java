@@ -87,7 +87,7 @@ public class Login extends JFrame implements ActionListener {
         add(signUpButton);
 
 
-        ImageIcon backgroundRaw = new ImageIcon(ClassLoader.getSystemResource("images/backgrounds/background.png"));
+        ImageIcon backgroundRaw = new ImageIcon(ClassLoader.getSystemResource("images/backgrounds/skyscraper.png"));
         Image backgroundResizedImage = backgroundRaw.getImage().getScaledInstance(850, 480, Image.SCALE_DEFAULT);
         ImageIcon backgroundImage = new ImageIcon(backgroundResizedImage);
 
