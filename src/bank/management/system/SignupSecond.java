@@ -35,7 +35,7 @@ public class SignupSecond extends JFrame implements ActionListener {
 
         setLayout(null);
         setSize(Background.BACKGROUND_WIDTH, Background.BACKGROUND_HEIGHT);
-        setLocation(0, 0);
+        setLocation(30, 30);
 
         ImageIcon bankIconRaw = new ImageIcon(ClassLoader.getSystemResource("images/icons/bank.png"));
         Image bankIconResizedImage = bankIconRaw.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);

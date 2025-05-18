@@ -8,7 +8,7 @@ public class Connector {
 
     public Connector() {
         try {
-            connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/bankingSystem", "root", "Mysql12312345#");
+            connect = DriverManager.getConnection("jdbc:mysql://localhost:5100/bankingSystem", "root", "Mysql123123#");
             statement = connect.createStatement();
         } catch (Exception e) {
             e.printStackTrace();

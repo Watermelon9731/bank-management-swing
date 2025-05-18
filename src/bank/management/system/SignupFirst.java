@@ -1,6 +1,7 @@
 package bank.management.system;
 
 import bank.management.system.constants.Background;
+import bank.management.system.services.HashUtil;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
@@ -313,11 +314,11 @@ public class SignupFirst extends JFrame implements ActionListener {
                     JOptionPane.showMessageDialog(null, "Vui lòng điền tên tài khoản");
                 } else if (selectedDate == null || dob.trim().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Vui lòng điền ngày tháng năm sinh");
-                } else if (gender.equals("")) {
+                } else if (gender == null) {
                     JOptionPane.showMessageDialog(null, "Vui lòng chọn giới tính");
-                } else if (email.equals("")) {
+                } else if (email.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Vui lòng điền địa chỉ email");
-                } else if (maritalStatus.trim().isEmpty()) {
+                } else if (maritalStatus == null) {
                     JOptionPane.showMessageDialog(null, "Vui lòng chọn tình trạng hôn nhân");
                 } else if (address.trim().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Vui lòng điền địa chỉ hiện tại");
@@ -330,8 +331,9 @@ public class SignupFirst extends JFrame implements ActionListener {
                 } else if (province.trim().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Vui lòng điền tên tỉnh");
                 } else {
+                    String hashPassword = HashUtil.hashSHA256(password);
                     Connector connector = new Connector();
-                    String addValuesQuery = "insert into signup values ('" + this.formId + "', '" + name + "','" + account + "','" + dob + "','" + gender + "','" + email + "', '" + maritalStatus + "', '" + address + "', '" + city + "','" + password + "','" + province + "' )";
+                    String addValuesQuery = "insert into signup values ('" + this.formId + "', '" + name + "','" + account + "','" + dob + "','" + gender + "','" + email + "', '" + maritalStatus + "', '" + address + "', '" + city + "','" + province + "','" + hashPassword + "' )";
                     connector.statement.executeUpdate(addValuesQuery);
                     new SignupSecond(this.formId);
                     setVisible(false);
