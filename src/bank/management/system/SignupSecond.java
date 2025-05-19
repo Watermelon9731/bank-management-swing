@@ -175,7 +175,7 @@ public class SignupSecond extends JFrame implements ActionListener {
                 } else {
                     Connector connector = new Connector();
 
-                    String signupFormQuery = "insert into signupSecond values('"+this.formId+"', '"+citizenIdentification+"', '"+religion+"','"+dateOfIssue+"','"+placeOfIssue+"','"+education+"')";
+                    String signupFormQuery = "insert into signup_second values('"+this.formId+"', '"+citizenIdentification+"', '"+religion+"','"+dateOfIssue+"','"+placeOfIssue+"','"+education+"')";
 
                     connector.statement.executeUpdate(signupFormQuery);
 

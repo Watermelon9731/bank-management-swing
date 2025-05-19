@@ -1,13 +1,14 @@
 package bank.management.system;
 
 import bank.management.system.constants.Background;
-import com.toedter.calendar.JDateChooser;
+import bank.management.system.services.HashUtil;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
+import java.security.SecureRandom;
 
 public class SignupThird extends JFrame implements ActionListener {
     JLabel bankIconLabel, headingLabel, pageNumberLabel, titleLabel, accountTypeLabel, serviceRequiredLabel, backgroundImageLabel;
@@ -142,7 +143,7 @@ public class SignupThird extends JFrame implements ActionListener {
         eStatementCheckbox.setBounds(this.formStartX + 400, this.getPositionY(5), 200, this.lineHeight);
         add(eStatementCheckbox);
 
-        confirmCheckbox = new JCheckBox("Tôi xin cam đoan rằng mọi thông tin được điền đều chính xác và chịu trách nhiệm trước pháp luật về nội dung trên.", false);
+        confirmCheckbox = new JCheckBox("<html><div style='width:500px;'>Tôi xin cam đoan rằng mọi thông tin được điền đều chính xác và chịu trách nhiệm trước pháp luật về nội dung trên.</div></html>", false);
         confirmCheckbox.setOpaque(false);
         confirmCheckbox.setForeground(Color.WHITE);
         confirmCheckbox.setFont(new Font("Arial", Font.BOLD, 16));
@@ -165,11 +166,11 @@ public class SignupThird extends JFrame implements ActionListener {
         cancelButton.addActionListener(this);
         add(cancelButton);
 
-        submitButton = new JButton("Tạo đơn");
+        submitButton = new JButton("Tạo tài khoản");
         submitButton.setFont(new Font("Arial", Font.BOLD, 16));
         submitButton.setBackground(Background.BUTTON_PRIMARY);
         submitButton.setForeground(Color.WHITE);
-        submitButton.setBounds(this.formStartX + 260, this.getPositionY(8) - 20, 100, this.lineHeight);
+        submitButton.setBounds(this.formStartX + 260, this.getPositionY(8) - 20, 150, this.lineHeight);
         submitButton.addActionListener(this);
         add(submitButton);
 
@@ -188,7 +189,7 @@ public class SignupThird extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String actionType = null;
+        String actionType = "";
         if (savingAccountRadioButton.isSelected()) {
             actionType = "Saving Account";
         } else if (fixedDepositRadioButton.isSelected()) {
@@ -199,15 +200,17 @@ public class SignupThird extends JFrame implements ActionListener {
             actionType = "Recurring Deposit Account";
         }
 
-        Random randomNumber = new Random();
-        long sevenDigitsNumber = (randomNumber.nextLong() % 90000000L) + 1409963000000000L;
-        String cardNumber = "" + Math.abs(sevenDigitsNumber);
+        SecureRandom randomNumber = new SecureRandom();
+        long elevenDigitsNumber = 1_000_000_0000L + (Math.abs(randomNumber.nextLong()) % 9_000_000_0000L);
 
-        long threeDigitsNumber = (randomNumber.nextLong() % 9000L)+ 1000L;
+        String cardNumber = "" + Math.abs(elevenDigitsNumber);
+
+        long threeDigitsNumber = (randomNumber.nextLong() % 9000L) + 1000L;
         String pin = "" + Math.abs(threeDigitsNumber);
+        String pinCode = HashUtil.hashSHA256(pin + cardNumber);
 
         String services = "";
-        if(atmCardCheckBox.isSelected()){
+        if (atmCardCheckBox.isSelected()) {
             services = services + "ATM Card ";
         } else if (internetBankingCheckBox.isSelected()) {
             services = services + "Internet Banking";
@@ -222,31 +225,35 @@ public class SignupThird extends JFrame implements ActionListener {
         }
 
         try {
-            if (e.getSource() == submitButton){
-                if (actionType.equals("")){
-                    JOptionPane.showMessageDialog(null,"Fill all the fields");
-                }else {
+            if (e.getSource() == submitButton) {
+                if (actionType.equals("")) {
+                    JOptionPane.showMessageDialog(null, "Vui lòng chọn loại tài khoản");
+                } else if (services.equals("")) {
+                    JOptionPane.showMessageDialog(null, "Vui lòng chọn ít nhất 1 dịch vụ");
+                } else if (!confirmCheckbox.isSelected()) {
+                    JOptionPane.showMessageDialog(null, "Vui lòng chọn xác nhận thông tin");
+                }                else {
                     Connector connector = new Connector();
 
-                    String addInformationQuery = "insert into signupThird values('"+this.formId+"', '"+actionType+"','"+cardNumber+"','"+pin+"','"+services+"')";
+                    String addInformationQuery = "insert into signup_third values('" + this.formId + "', '" + actionType + "','" + cardNumber + "','" + pinCode + "','" + services + "')";
 
-                    String loginQuery = "insert into login values('"+this.formId+"','"+cardNumber+"','"+pin+"')";
+                    String loginQuery = "insert into login values('" + this.formId + "','" + cardNumber + "','" + pinCode + "')";
                     connector.statement.executeUpdate(addInformationQuery);
 
                     connector.statement.executeUpdate(loginQuery);
-                    JOptionPane.showMessageDialog(null,"Card Number : "+cardNumber+" Pin : "+pin );
-                    new Deposit(pin);
+                    JOptionPane.showMessageDialog(null, "Số thẻ : " + cardNumber + "  Mã Pin : " + pin);
+                    new Home(pinCode);
                     setVisible(false);
                 }
             } else if (e.getSource() == backButton) {
                 setVisible(false);
                 new SignupSecond(this.formId);
-             }else if (e.getSource() == cancelButton) {
+            } else if (e.getSource() == cancelButton) {
                 setVisible(false);
                 new Login();
             }
 
-        }catch (Exception E){
+        } catch (Exception E) {
             E.printStackTrace();
         }
     }

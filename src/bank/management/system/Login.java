@@ -1,11 +1,13 @@
 package bank.management.system;
 
 import bank.management.system.constants.Background;
+import bank.management.system.services.HashUtil;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
 
 public class Login extends JFrame implements ActionListener {
     JLabel bankIconLabel, cardIconLabel, titleLabel, cardNumberLabel, pinNumberLabel, backgroundImageLabel;
@@ -34,13 +36,13 @@ public class Login extends JFrame implements ActionListener {
         titleLabel.setBounds(170, 125, 600, 40);
         add(titleLabel);
 
-        cardNumberLabel = new JLabel("Mã thẻ No:");
+        cardNumberLabel = new JLabel("Mã thẻ:");
         cardNumberLabel.setFont(new Font("Arial", Font.BOLD, 26));
         cardNumberLabel.setForeground(Color.WHITE);
         cardNumberLabel.setBounds(170, 190, 200, 40);
         add(cardNumberLabel);
 
-        cardNumberTextField = new JTextField(15);
+        cardNumberTextField = new JTextField();
         cardNumberTextField.setBounds(310, 190, 300, 40);
         cardNumberTextField.setFont(new Font("Arial", Font.BOLD, 20));
         add(cardNumberTextField);
@@ -110,9 +112,39 @@ public class Login extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         try {
             if (e.getSource() == loginButton) {
+                String cardNumber = cardNumberTextField.getText();
+                String pin = pinNumberPasswordField.getText();
+                if (cardNumberTextField.getText().equals("")) {
+                    JOptionPane.showMessageDialog(null, "Vui lòng nhập số thẻ");
+                } else if (pinNumberPasswordField.getText().equals("")) {
+                    JOptionPane.showMessageDialog(null, "Vui lòng nhập mã pin");
+                } else {
+                    try {
+                        Float.parseFloat(cardNumberTextField.getText());
+                        Float.parseFloat(pinNumberPasswordField.getText());
+                        try {
+                            String pinCode = HashUtil.hashSHA256(pin + cardNumber);
 
-                setVisible(false);
-                new Home("");
+                            Connector connector = new Connector();
+                            String loginQuery = "select * from login where card_number='" + cardNumber + "' and pin='" + pinCode + "'";
+
+                            ResultSet rs = connector.statement.executeQuery(loginQuery);
+
+                            if (rs.next()) {
+                                setVisible(false);
+                                new Home(pinCode);
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Sai mã số thẻ hoặc mã PIN");
+                            }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                            JOptionPane.showMessageDialog(null, "Tạm thời không thể đăng nhập");
+                        }
+                    } catch (NumberFormatException numberFormatException) {
+                        numberFormatException.printStackTrace();
+                        JOptionPane.showMessageDialog(null, "Số thẻ và Mã PIN phải là số");
+                    }
+                }
             } else if (e.getSource() == signUpButton) {
                 textFieldClear();
                 new SignupFirst("");
