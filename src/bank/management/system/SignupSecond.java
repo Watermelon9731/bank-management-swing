@@ -35,7 +35,7 @@ public class SignupSecond extends JFrame implements ActionListener {
 
         setLayout(null);
         setSize(Background.BACKGROUND_WIDTH, Background.BACKGROUND_HEIGHT);
-        setLocation(30, 30);
+        setLocation(360, 40);
 
         ImageIcon bankIconRaw = new ImageIcon(ClassLoader.getSystemResource("images/icons/bank.png"));
         Image bankIconResizedImage = bankIconRaw.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
@@ -46,20 +46,20 @@ public class SignupSecond extends JFrame implements ActionListener {
         add(bankIconLabel);
 
         headingLabel = new JLabel("Đơn đăng ký Số." + this.formId);
-        headingLabel.setForeground(Color.BLACK);
+        headingLabel.setForeground(Color.WHITE);
         headingLabel.setFont(new Font("Arial", Font.BOLD, 30));
         headingLabel.setBounds(150, 30, 600, 40);
         add(headingLabel);
 
         pageNumberLabel = new JLabel("Thông tin cá nhân - Trang 2");
-        pageNumberLabel.setForeground(Color.BLACK);
+        pageNumberLabel.setForeground(Color.WHITE);
         pageNumberLabel.setFont(new Font("Arial", Font.BOLD, 22));
         pageNumberLabel.setBounds(150, 70, 600, 40);
         add(pageNumberLabel);
 
         // Citizen Identification field
         citizenIdentificationLabel = new JLabel("Số CCCD");
-        citizenIdentificationLabel.setForeground(Color.BLACK);
+        citizenIdentificationLabel.setForeground(Color.WHITE);
         citizenIdentificationLabel.setFont(new Font("Arial", Font.BOLD, 22));
         citizenIdentificationLabel.setBounds(this.formStartX, this.formStartY, this.formLabelWidth, this.lineHeight);
         add(citizenIdentificationLabel);
@@ -72,7 +72,7 @@ public class SignupSecond extends JFrame implements ActionListener {
 
         // Religion field
         religionLabel = new JLabel("Tôn giáo");
-        religionLabel.setForeground(Color.BLACK);
+        religionLabel.setForeground(Color.WHITE);
         religionLabel.setFont(new Font("Arial", Font.BOLD, 22));
         religionLabel.setBounds(this.formStartX, this.getPositionY(1), this.formLabelWidth, this.lineHeight);
         add(religionLabel);
@@ -86,7 +86,7 @@ public class SignupSecond extends JFrame implements ActionListener {
 
         // Date of issue field
         dateOfIssueLabel = new JLabel("Ngày cấp");
-        dateOfIssueLabel.setForeground(Color.BLACK);
+        dateOfIssueLabel.setForeground(Color.WHITE);
         dateOfIssueLabel.setFont(new Font("Arial", Font.BOLD, 22));
         dateOfIssueLabel.setBounds(this.formStartX, this.getPositionY(2), this.formLabelWidth, this.lineHeight);
         add(dateOfIssueLabel);
@@ -98,7 +98,7 @@ public class SignupSecond extends JFrame implements ActionListener {
 
         // Place of issue field
         placeOfIssueLabel = new JLabel("Nơi cấp");
-        placeOfIssueLabel.setForeground(Color.BLACK);
+        placeOfIssueLabel.setForeground(Color.WHITE);
         placeOfIssueLabel.setFont(new Font("Arial", Font.BOLD, 22));
         placeOfIssueLabel.setBounds(this.formStartX, this.getPositionY(3), this.formLabelWidth, this.lineHeight);
         add(placeOfIssueLabel);
@@ -111,7 +111,7 @@ public class SignupSecond extends JFrame implements ActionListener {
 
         // Education field
         educationLabel = new JLabel("Học vấn");
-        educationLabel.setForeground(Color.BLACK);
+        educationLabel.setForeground(Color.WHITE);
         educationLabel.setFont(new Font("Arial", Font.BOLD, 22));
         educationLabel.setBounds(this.formStartX, this.getPositionY(4), this.formLabelWidth, this.lineHeight);
         add(educationLabel);
@@ -125,7 +125,7 @@ public class SignupSecond extends JFrame implements ActionListener {
 
         backButton = new JButton("Quay lại");
         backButton.setFont(new Font("Arial", Font.BOLD, 16));
-        backButton.setBackground(Background.BUTTON_WARNING);
+        backButton.setBackground(Background.BUTTON_INFO);
         backButton.setForeground(Color.WHITE);
         backButton.setBounds(320, this.getPositionY(6), 150, 50);
         backButton.addActionListener(this);
@@ -151,12 +151,40 @@ public class SignupSecond extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        String citizenIdentification = citizenIdentificationTextField.getText();
+        String religion = (String) religionComboBox.getSelectedItem();
+        String dateOfIssue = ((JTextField) dateOfIssueChooser.getDateEditor().getUiComponent()).getText();
+        String placeOfIssue = placeOfIssueTextField.getText();
+        String education = (String) educationComboBox.getSelectedItem();
+
         if (e.getSource() == backButton) {
             setVisible(false);
             new SignupFirst(this.formId);
         } else {
-            new SignupThird(formId);
-            setVisible(false);
+            try {
+                if (citizenIdentification.trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Vui lòng điền số CCCD");
+                } else if (religion.trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Vui lòng chọn tôn giáo");
+                } else if (dateOfIssue.trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Vui lòng điền ngày cấp CCCD");
+                } else if (placeOfIssue.trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Vui lòng điền nơi cấp CCCD");
+                } else if (education.trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Vui lòng chọn trình độ học vấn");
+                } else {
+                    Connector connector = new Connector();
+
+                    String signupFormQuery = "insert into signupSecond values('"+this.formId+"', '"+citizenIdentification+"', '"+religion+"','"+dateOfIssue+"','"+placeOfIssue+"','"+education+"')";
+
+                    connector.statement.executeUpdate(signupFormQuery);
+
+                    setVisible(false);
+                    new SignupThird(this.formId);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
 

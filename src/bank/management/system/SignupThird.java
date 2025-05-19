@@ -10,23 +10,19 @@ import java.awt.event.ActionListener;
 import java.util.Random;
 
 public class SignupThird extends JFrame implements ActionListener {
-    JLabel bankIconLabel, headingLabel, pageNumberLabel, titleLabel, accountTypeLabel, serviceRequiredLabel;
-    JTextField citizenIdentificationTextField, placeOfIssueTextField;
-    JDateChooser dateOfIssueChooser;
+    JLabel bankIconLabel, headingLabel, pageNumberLabel, titleLabel, accountTypeLabel, serviceRequiredLabel, backgroundImageLabel;
     JRadioButton savingAccountRadioButton, fixedDepositRadioButton, currentAccountRadioButton, recurringDepositAccountRadioButton;
     JCheckBox atmCardCheckBox, internetBankingCheckBox, mobileBankingCheckBox, emailAlertCheckBox, chequeBookCheckbox, eStatementCheckbox, confirmCheckbox;
 
-    JButton cancelButton, submitButton;
+    JButton backButton, cancelButton, submitButton;
 
-    String formId;
+    String formId, citizenId;
 
     int lineHeight = 40;
     int formStartY = 160;
     int formStartX = 45;
     int formLabelWidth = 300;
     int formTextFieldWidth = 300;
-    int formTextFieldStartX = formStartX + formLabelWidth;
-    int formRadioButtonWidth = 150;
 
     public int getPositionY(int level) {
         return this.formStartY + lineHeight * level;
@@ -44,46 +40,50 @@ public class SignupThird extends JFrame implements ActionListener {
         bankIconLabel.setBounds(25, 10, 100, 100);
         add(bankIconLabel);
 
-        headingLabel = new JLabel("Application Form No." + this.formId);
-        headingLabel.setForeground(Color.BLACK);
+        headingLabel = new JLabel("Đơn đăng ký Số." + this.formId);
+        headingLabel.setForeground(Color.WHITE);
         headingLabel.setFont(new Font("Arial", Font.BOLD, 30));
         headingLabel.setBounds(150, 30, 600, 40);
         add(headingLabel);
 
-        pageNumberLabel = new JLabel("Account Information - Page 3");
-        pageNumberLabel.setForeground(Color.BLACK);
+        pageNumberLabel = new JLabel("Thông tin tài khoản - Page 3");
+        pageNumberLabel.setForeground(Color.WHITE);
         pageNumberLabel.setFont(new Font("Arial", Font.BOLD, 24));
         pageNumberLabel.setBounds(150, 70, 600, 40);
         add(pageNumberLabel);
 
         // Account field
-        accountTypeLabel = new JLabel("Account Type");
-        accountTypeLabel.setForeground(Color.BLACK);
+        accountTypeLabel = new JLabel("Loại tài khoản");
+        accountTypeLabel.setForeground(Color.WHITE);
         accountTypeLabel.setFont(new Font("Arial", Font.BOLD, 22));
         accountTypeLabel.setBounds(this.formStartX, this.formStartY, this.formLabelWidth, this.lineHeight);
         add(accountTypeLabel);
 
-        savingAccountRadioButton = new JRadioButton("Saving Account");
+        savingAccountRadioButton = new JRadioButton("Tài khoản tiết kiệm");
+        savingAccountRadioButton.setOpaque(false);
+        savingAccountRadioButton.setForeground(Color.WHITE);
         savingAccountRadioButton.setFont(new Font("Arial", Font.BOLD, 16));
-        savingAccountRadioButton.setBackground(new Color(215, 252, 252));
         savingAccountRadioButton.setBounds(this.formStartX, this.getPositionY(1), this.formTextFieldWidth, this.lineHeight);
         add(savingAccountRadioButton);
 
-        fixedDepositRadioButton = new JRadioButton("Fixed Deposit Account");
+        fixedDepositRadioButton = new JRadioButton("Tài khoản tiền gửi có kỳ hạn");
         fixedDepositRadioButton.setFont(new Font("Arial", Font.BOLD, 16));
-        fixedDepositRadioButton.setBackground(new Color(215, 252, 252));
+        fixedDepositRadioButton.setOpaque(false);
+        fixedDepositRadioButton.setForeground(Color.WHITE);
         fixedDepositRadioButton.setBounds(this.formStartX + this.formTextFieldWidth, this.getPositionY(1), this.formTextFieldWidth, this.lineHeight);
         add(fixedDepositRadioButton);
 
-        currentAccountRadioButton = new JRadioButton("Current Account");
+        currentAccountRadioButton = new JRadioButton("Tài khoản vãng lai");
+        currentAccountRadioButton.setOpaque(false);
+        currentAccountRadioButton.setForeground(Color.WHITE);
         currentAccountRadioButton.setFont(new Font("Arial", Font.BOLD, 16));
-        currentAccountRadioButton.setBackground(new Color(215, 252, 252));
         currentAccountRadioButton.setBounds(this.formStartX, this.getPositionY(2), this.formTextFieldWidth, this.lineHeight);
         add(currentAccountRadioButton);
 
-        recurringDepositAccountRadioButton = new JRadioButton("Recurring Deposit Account");
+        recurringDepositAccountRadioButton = new JRadioButton("Tài khoản tiền gửi định kỳ");
+        recurringDepositAccountRadioButton.setOpaque(false);
+        recurringDepositAccountRadioButton.setForeground(Color.WHITE);
         recurringDepositAccountRadioButton.setFont(new Font("Arial", Font.BOLD, 16));
-        recurringDepositAccountRadioButton.setBackground(new Color(215, 252, 252));
         recurringDepositAccountRadioButton.setBounds(this.formStartX + this.formTextFieldWidth, this.getPositionY(2), this.formTextFieldWidth, this.lineHeight);
         add(recurringDepositAccountRadioButton);
 
@@ -94,71 +94,92 @@ public class SignupThird extends JFrame implements ActionListener {
         buttonGroup.add(recurringDepositAccountRadioButton);
 
         // Service Required field
-        serviceRequiredLabel = new JLabel("Service Required");
-        serviceRequiredLabel.setForeground(Color.BLACK);
+        serviceRequiredLabel = new JLabel("Đăng ký dịch vụ");
+        serviceRequiredLabel.setForeground(Color.WHITE);
         serviceRequiredLabel.setFont(new Font("Arial", Font.BOLD, 22));
         serviceRequiredLabel.setBounds(this.formStartX, this.getPositionY(3), this.formLabelWidth, this.lineHeight);
         add(serviceRequiredLabel);
 
-        atmCardCheckBox = new JCheckBox("ATM Card", false);
-        atmCardCheckBox.setBackground(new Color(215, 252, 252));
+        atmCardCheckBox = new JCheckBox("Thẻ ATM", false);
+        atmCardCheckBox.setOpaque(false);
+        atmCardCheckBox.setForeground(Color.WHITE);
         atmCardCheckBox.setFont(new Font("Arial", Font.BOLD, 16));
         atmCardCheckBox.setBounds(this.formStartX, this.getPositionY(4), 200, this.lineHeight);
         add(atmCardCheckBox);
 
         internetBankingCheckBox = new JCheckBox("Internet Banking", false);
-        internetBankingCheckBox.setBackground(new Color(215, 252, 252));
+        internetBankingCheckBox.setOpaque(false);
+        internetBankingCheckBox.setForeground(Color.WHITE);
         internetBankingCheckBox.setFont(new Font("Arial", Font.BOLD, 16));
         internetBankingCheckBox.setBounds(this.formStartX + 200, this.getPositionY(4), 200, this.lineHeight);
         add(internetBankingCheckBox);
 
         mobileBankingCheckBox = new JCheckBox("Mobile Banking", false);
-        mobileBankingCheckBox.setBackground(new Color(215, 252, 252));
+        mobileBankingCheckBox.setOpaque(false);
+        mobileBankingCheckBox.setForeground(Color.WHITE);
         mobileBankingCheckBox.setFont(new Font("Arial", Font.BOLD, 16));
         mobileBankingCheckBox.setBounds(this.formStartX + 400, this.getPositionY(4), 200, this.lineHeight);
         add(mobileBankingCheckBox);
 
-        emailAlertCheckBox = new JCheckBox("Email Alert", false);
-        emailAlertCheckBox.setBackground(new Color(215, 252, 252));
+        emailAlertCheckBox = new JCheckBox("Thông báo qua Email", false);
+        emailAlertCheckBox.setOpaque(false);
+        emailAlertCheckBox.setForeground(Color.WHITE);
         emailAlertCheckBox.setFont(new Font("Arial", Font.BOLD, 16));
         emailAlertCheckBox.setBounds(this.formStartX, this.getPositionY(5), 200, this.lineHeight);
         add(emailAlertCheckBox);
 
-        chequeBookCheckbox = new JCheckBox("E-Statement", false);
-        chequeBookCheckbox.setBackground(new Color(215, 252, 252));
+        chequeBookCheckbox = new JCheckBox("Sổ séc", false);
+        chequeBookCheckbox.setOpaque(false);
+        chequeBookCheckbox.setForeground(Color.WHITE);
         chequeBookCheckbox.setFont(new Font("Arial", Font.BOLD, 16));
         chequeBookCheckbox.setBounds(this.formStartX + 200, this.getPositionY(5), 200, this.lineHeight);
         add(chequeBookCheckbox);
 
-        eStatementCheckbox = new JCheckBox("E-Statement", true);
-        eStatementCheckbox.setBackground(new Color(215, 252, 252));
+        eStatementCheckbox = new JCheckBox("Sao kê điện tử", false);
+        eStatementCheckbox.setOpaque(false);
+        eStatementCheckbox.setForeground(Color.WHITE);
         eStatementCheckbox.setFont(new Font("Arial", Font.BOLD, 16));
         eStatementCheckbox.setBounds(this.formStartX + 400, this.getPositionY(5), 200, this.lineHeight);
         add(eStatementCheckbox);
 
-        confirmCheckbox = new JCheckBox("I here by declare that the above entered details correct to the best of my knowledge.", true);
-        confirmCheckbox.setBackground(new Color(215, 252, 252));
+        confirmCheckbox = new JCheckBox("Tôi xin cam đoan rằng mọi thông tin được điền đều chính xác và chịu trách nhiệm trước pháp luật về nội dung trên.", false);
+        confirmCheckbox.setOpaque(false);
+        confirmCheckbox.setForeground(Color.WHITE);
         confirmCheckbox.setFont(new Font("Arial", Font.BOLD, 16));
         confirmCheckbox.setBounds(this.formStartX, this.getPositionY(6), 755, this.lineHeight);
         add(confirmCheckbox);
 
-        cancelButton = new JButton("Cancel");
-        cancelButton.setFont(new Font("Arial", Font.BOLD, 14));
-        cancelButton.setBackground(Color.RED);
+        backButton = new JButton("Quay lại");
+        backButton.setFont(new Font("Arial", Font.BOLD, 16));
+        backButton.setBackground(Background.BUTTON_INFO);
+        backButton.setForeground(Color.WHITE);
+        backButton.setBounds(this.formStartX, this.getPositionY(8) - 20, 100, this.lineHeight);
+        backButton.addActionListener(this);
+        add(backButton);
+
+        cancelButton = new JButton("Hủy");
+        cancelButton.setFont(new Font("Arial", Font.BOLD, 16));
+        cancelButton.setBackground(Background.BUTTON_WARNING);
         cancelButton.setForeground(Color.WHITE);
-        cancelButton.setBounds(this.formStartX, this.getPositionY(8) - 20, 100, this.lineHeight);
+        cancelButton.setBounds(this.formStartX + 130, this.getPositionY(8) - 20, 100, this.lineHeight);
         cancelButton.addActionListener(this);
         add(cancelButton);
 
-        submitButton = new JButton("Submit");
-        submitButton.setFont(new Font("Arial", Font.BOLD, 14));
-        submitButton.setBackground(Color.BLUE);
+        submitButton = new JButton("Tạo đơn");
+        submitButton.setFont(new Font("Arial", Font.BOLD, 16));
+        submitButton.setBackground(Background.BUTTON_PRIMARY);
         submitButton.setForeground(Color.WHITE);
-        submitButton.setBounds(this.formStartX + 130, this.getPositionY(8) - 20, 100, this.lineHeight);
+        submitButton.setBounds(this.formStartX + 260, this.getPositionY(8) - 20, 100, this.lineHeight);
         submitButton.addActionListener(this);
         add(submitButton);
 
-        getContentPane().setBackground(Background.BACKGROUND_COLOR);
+        ImageIcon backgroundRaw = new ImageIcon(ClassLoader.getSystemResource("images/backgrounds/signup.png"));
+        Image backgroundResizedImage = backgroundRaw.getImage().getScaledInstance(800, 800, Image.SCALE_DEFAULT);
+        ImageIcon backgroundImage = new ImageIcon(backgroundResizedImage);
+        backgroundImageLabel = new JLabel(backgroundImage);
+        backgroundImageLabel.setBounds(0, 0, 800, 800);
+        add(backgroundImageLabel);
+
         setLayout(null);
         setSize(800, 800);
         setLocation(360, 40);
@@ -187,27 +208,27 @@ public class SignupThird extends JFrame implements ActionListener {
 
         String services = "";
         if(atmCardCheckBox.isSelected()){
-            services = services+"ATM Card ";
+            services = services + "ATM Card ";
         } else if (internetBankingCheckBox.isSelected()) {
-            services = services+"Internet Banking";
+            services = services + "Internet Banking";
         } else if (mobileBankingCheckBox.isSelected()) {
-            services = services+"Mobile Banking";
+            services = services + "Mobile Banking";
         } else if (emailAlertCheckBox.isSelected()) {
-            services = services+"Email Alerts";
+            services = services + "Email Alerts";
         } else if (chequeBookCheckbox.isSelected()) {
-            services = services+"Cheque Book";
+            services = services + "Cheque Book";
         } else if (eStatementCheckbox.isSelected()) {
-            services = services+"E-Statement";
+            services = services + "E-Statement";
         }
 
         try {
-            if (e.getSource()== submitButton){
+            if (e.getSource() == submitButton){
                 if (actionType.equals("")){
                     JOptionPane.showMessageDialog(null,"Fill all the fields");
                 }else {
                     Connector connector = new Connector();
 
-                    String addInformationQuery = "insert into signupthree values('"+this.formId+"', '"+actionType+"','"+cardNumber+"','"+pin+"','"+services+"')";
+                    String addInformationQuery = "insert into signupThird values('"+this.formId+"', '"+actionType+"','"+cardNumber+"','"+pin+"','"+services+"')";
 
                     String loginQuery = "insert into login values('"+this.formId+"','"+cardNumber+"','"+pin+"')";
                     connector.statement.executeUpdate(addInformationQuery);
@@ -217,8 +238,12 @@ public class SignupThird extends JFrame implements ActionListener {
                     new Deposit(pin);
                     setVisible(false);
                 }
-            } else if (e.getSource() == cancelButton) {
-                System.exit(0);
+            } else if (e.getSource() == backButton) {
+                setVisible(false);
+                new SignupSecond(this.formId);
+             }else if (e.getSource() == cancelButton) {
+                setVisible(false);
+                new Login();
             }
 
         }catch (Exception E){

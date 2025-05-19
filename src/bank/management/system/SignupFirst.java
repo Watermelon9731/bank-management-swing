@@ -248,9 +248,9 @@ public class SignupFirst extends JFrame implements ActionListener {
 
         backButton = new JButton("Quay lại");
         backButton.setFont(new Font("Arial", Font.BOLD, 16));
-        backButton.setBackground(Background.BUTTON_WARNING);
+        backButton.setBackground(Background.BUTTON_INFO);
         backButton.setForeground(Color.WHITE);
-        backButton.setBounds(320, this.getPositionY(11), 150, 50);
+        backButton.setBounds(320, this.getPositionY(11), 150, 40);
         backButton.addActionListener(this);
         add(backButton);
 
@@ -258,7 +258,7 @@ public class SignupFirst extends JFrame implements ActionListener {
         nextButton.setFont(new Font("Arial", Font.BOLD, 16));
         nextButton.setBackground(Background.BUTTON_PRIMARY);
         nextButton.setForeground(Color.WHITE);
-        nextButton.setBounds(500, this.getPositionY(11), 150, 50);
+        nextButton.setBounds(500, this.getPositionY(11), 150, 40);
         nextButton.addActionListener(this);
         add(nextButton);
 
@@ -279,7 +279,7 @@ public class SignupFirst extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == backButton) {
             setVisible(false);
-            new Home("");
+            new Login();
         } else if (e.getSource() == nextButton) {
             String name = nameTextField.getText();
             String account = accountTextField.getText();

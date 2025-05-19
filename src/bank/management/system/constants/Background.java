@@ -18,6 +18,7 @@ public class Background {
     public static final Color BUTTON_INFO = new Color(228, 127, 0);
     public static final Color BUTTON_PRIMARY = new Color(1, 93, 158);
     public static final Color BUTTON_WARNING = new Color(165, 8, 8);
+    public static final Color BUTTON_SUGGEST = new Color(77, 158, 0);
 
     public static int getPositionY(int startY, int level) {
         if (startY < 0 || startY >= BACKGROUND_HEIGHT) {
