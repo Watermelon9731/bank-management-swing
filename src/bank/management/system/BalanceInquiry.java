@@ -1,6 +1,7 @@
 package bank.management.system;
 
 import bank.management.system.constants.Background;
+import bank.management.system.services.StringUtil;
 
 import java.awt.*;
 import java.sql.ResultSet;
@@ -10,10 +11,8 @@ import java.awt.event.ActionListener;
 
 public class BalanceInquiry extends JFrame implements ActionListener {
     String pinCode;
-
-    JLabel backgroundLabel, headingLabel ,balanceInquiryLabel;
-    TextField balanceInquiryTextField;
-    JButton depositButton, backButton;
+    JLabel backgroundLabel, headingLabel, balanceInquiryLabel;
+    JButton backButton;
 
     BalanceInquiry(String pinCode) {
         this.pinCode = pinCode;
@@ -38,7 +37,7 @@ public class BalanceInquiry extends JFrame implements ActionListener {
 
         backButton = new JButton("Quay lại");
         backButton.setBounds(Background.ATM_BUTTON_RIGHT_START_X, Background.ATM_BUTTON_START_Y + 52, 150, Background.ATM_BUTTON_HEIGHT);
-        backButton.setBackground(new Color(65, 125, 128));
+        backButton.setBackground(Background.BUTTON_INFO);
         backButton.setForeground(Color.WHITE);
         backButton.addActionListener(this);
         add(backButton);
@@ -56,7 +55,7 @@ public class BalanceInquiry extends JFrame implements ActionListener {
         int balance = 0;
         try {
             Connector connector = new Connector();
-            ResultSet resultSet = connector.statement.executeQuery("Select * from bank where pin_code = '" + pinCode + "'");
+            ResultSet resultSet = connector.statement.executeQuery("select * from bank where pin = '" + pinCode + "'");
             while (resultSet.next()) {
                 if (resultSet.getString("type").equals("Deposit")) {
                     balance += Integer.parseInt(resultSet.getString("amount"));
@@ -68,11 +67,8 @@ public class BalanceInquiry extends JFrame implements ActionListener {
             e.printStackTrace();
         }
 
-        balanceInquiryLabel.setText("" + balance);
+        balanceInquiryLabel.setText(StringUtil.parseIntValueToFormatStringValue(balance) + " vnđ");
 
-        setLayout(null);
-        setSize(1550, 1080);
-        setLocation(0, 0);
         setVisible(true);
     }
 

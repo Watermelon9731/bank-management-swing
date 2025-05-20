@@ -68,7 +68,7 @@ public class Withdraw extends JFrame implements ActionListener {
         withdraw2000Button.addActionListener(this);
         add(withdraw2000Button);
 
-        withdraw500Button = new JButton("5000.000");
+        withdraw500Button = new JButton("500.000");
         withdraw500Button.setForeground(Color.WHITE);
         withdraw500Button.setBackground(Background.BUTTON_PRIMARY);
         withdraw500Button.setBounds(Background.ATM_BUTTON_LEFT_START_X, Background.getPositionY(Background.ATM_BUTTON_START_Y, 2), 150, Background.ATM_BUTTON_HEIGHT);
@@ -118,11 +118,14 @@ public class Withdraw extends JFrame implements ActionListener {
         } else {
             String rawAmount = ((JButton) e.getSource()).getText();
             String amount = StringUtil.parseStringToValue(rawAmount);
+
             Connector connector = new Connector();
             Date date = new Date();
+
             try {
                 ResultSet resultSet = connector.statement.executeQuery("select * from bank where pin = '" + this.pinCode + "'");
                 int balance = 0;
+
                 while (resultSet.next()) {
                     if (resultSet.getString("type").equals("Deposit")) {
                         balance += Integer.parseInt(resultSet.getString("amount"));

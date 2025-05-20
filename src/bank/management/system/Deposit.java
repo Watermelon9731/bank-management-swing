@@ -24,7 +24,7 @@ public class Deposit extends JFrame implements ActionListener {
         setSize(Background.BACKGROUND_WIDTH, Background.BACKGROUND_HEIGHT);
         setLocation(0, 0);
 
-        amountLabel = new JLabel("Nhập số tiền cần chuyển");
+        amountLabel = new JLabel("Nhập số tiền muốn nộp");
         amountLabel.setForeground(Color.BLACK);
         amountLabel.setFont(new Font("Arial", Font.BOLD, 16));
         amountLabel.setBounds(0, 180, Background.BACKGROUND_WIDTH, 35);
@@ -36,10 +36,10 @@ public class Deposit extends JFrame implements ActionListener {
         amountTextField.setBackground(Color.LIGHT_GRAY);
         amountTextField.setForeground(Color.BLACK);
         amountTextField.setBounds(Background.ATM_BUTTON_LEFT_START_X + 60, 230, 320, 42);
-        amountTextField.setFont(new Font("Arial", Font.BOLD, 26));
+        amountTextField.setFont(new Font("Arial", Font.BOLD, 20));
         add(amountTextField);
 
-        depositButton = new JButton("Chuyển khoản");
+        depositButton = new JButton("Nộp tiền");
         depositButton.setBounds(Background.ATM_BUTTON_RIGHT_START_X, Background.ATM_BUTTON_START_Y, 150, Background.ATM_BUTTON_HEIGHT);
         depositButton.setBackground(Background.BUTTON_PRIMARY);
         depositButton.setForeground(Color.WHITE);
@@ -72,18 +72,18 @@ public class Deposit extends JFrame implements ActionListener {
 
             if (e.getSource() == depositButton) {
                 if (amount.equals("")) {
-                    JOptionPane.showMessageDialog(null, "Vui lòng nhập số tiền muốn chuyển");
+                    JOptionPane.showMessageDialog(null, "Vui lòng nhập số tiền muốn nộp");
                 } else {
                     try {
                         Float.parseFloat(amount);
                         Connector connector = new Connector();
                         String addQuery = "insert into bank values('" + this.pinCode + "', '" + date + "', 'Deposit', '" + amount + "')";
                         connector.statement.executeUpdate(addQuery);
-                        JOptionPane.showMessageDialog(null, "Chuyển khoản thành công '" + amount + "'");
+                        JOptionPane.showMessageDialog(null, "Nạp tiền thành công '" + amount + "'");
                         new Home(this.pinCode);
                         setVisible(false);
                     } catch (NumberFormatException numberException) {
-                        JOptionPane.showMessageDialog(null, "Giá trị chuyển khoản là số");
+                        JOptionPane.showMessageDialog(null, "Giá trị tiền nộp là số");
                     }
 
                 }

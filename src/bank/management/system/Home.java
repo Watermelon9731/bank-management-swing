@@ -11,7 +11,7 @@ public class Home extends JFrame implements ActionListener {
     String pinCode;
     JLabel bankIconLabel, backgroundLabel;
 
-    JButton depositButton, cashWithdrawButton, fastCashButton, pinChangeButton, balanceInquiryButton, exitButton;
+    JButton depositButton, cashWithdrawButton, pinChangeButton, balanceInquiryButton, exitButton;
 
     int bankIconWidth = 80, bankIconHeight = 80;
 
@@ -49,31 +49,24 @@ public class Home extends JFrame implements ActionListener {
 
         add(label);
 
-        depositButton = new JButton("Chuyển khoản");
+        depositButton = new JButton("Nộp tiền");
         depositButton.setForeground(Color.WHITE);
         depositButton.setBackground(Background.BUTTON_PRIMARY);
-        depositButton.setBounds(this.leftStartX, this.buttonStartY, 150, this.buttonHeight);
+        depositButton.setBounds(this.leftStartX, this.getPositionY(1), 150, this.buttonHeight);
         depositButton.addActionListener(this);
         add(depositButton);
 
         cashWithdrawButton = new JButton("Rút tiền");
         cashWithdrawButton.setForeground(Color.WHITE);
         cashWithdrawButton.setBackground(Background.BUTTON_PRIMARY);
-        cashWithdrawButton.setBounds(this.rightStartX, this.buttonStartY, 150, this.buttonHeight);
+        cashWithdrawButton.setBounds(this.rightStartX, this.getPositionY(1), 150, this.buttonHeight);
         cashWithdrawButton.addActionListener(this);
         add(cashWithdrawButton);
-
-        fastCashButton = new JButton("Tạm ứng");
-        fastCashButton.setForeground(Color.WHITE);
-        fastCashButton.setBackground(Background.BUTTON_PRIMARY);
-        fastCashButton.setBounds(this.leftStartX, this.getPositionY(1), 150, this.buttonHeight);
-        fastCashButton.addActionListener(this);
-        add(fastCashButton);
 
         pinChangeButton = new JButton("Đổi mã PIN");
         pinChangeButton.setForeground(Color.WHITE);
         pinChangeButton.setBackground(Background.BUTTON_PRIMARY);
-        pinChangeButton.setBounds(this.rightStartX, this.getPositionY(1), 150, this.buttonHeight);
+        pinChangeButton.setBounds(this.rightStartX, this.getPositionY(2), 150, this.buttonHeight);
         pinChangeButton.addActionListener(this);
         add(pinChangeButton);
 
@@ -116,9 +109,6 @@ public class Home extends JFrame implements ActionListener {
             setVisible(false);
         } else if (e.getSource() == balanceInquiryButton) {
             new BalanceInquiry(this.pinCode);
-            setVisible(false);
-        } else if (e.getSource() == fastCashButton) {
-            new FastCash(this.pinCode);
             setVisible(false);
         } else if (e.getSource() == pinChangeButton) {
             new Pin(this.pinCode);

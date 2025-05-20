@@ -44,7 +44,7 @@ public class CustomWithdraw extends JFrame implements ActionListener {
         amountTextField.setBackground(Color.LIGHT_GRAY);
         amountTextField.setForeground(Color.BLACK);
         amountTextField.setBounds(Background.ATM_BUTTON_LEFT_START_X + 60, Background.ATM_BUTTON_START_Y, 320, 42);
-        amountTextField.setFont(new Font("Arial", Font.BOLD, 26));
+        amountTextField.setFont(new Font("Arial", Font.BOLD, 20));
         add(amountTextField);
 
         withdrawButton = new JButton("Chuyển khoản");
@@ -79,7 +79,7 @@ public class CustomWithdraw extends JFrame implements ActionListener {
                 String amount = amountTextField.getText();
                 Date date = new Date();
                 if (amountTextField.getText().equals("")) {
-                    JOptionPane.showMessageDialog(null, "Please enter the Amount you want to withdraw");
+                    JOptionPane.showMessageDialog(null, "Vui lòng nhập số tiền bạn cần rút");
                 } else {
                     try {
                         Integer.parseInt(amount);
@@ -97,11 +97,11 @@ public class CustomWithdraw extends JFrame implements ActionListener {
                         }
 
                         if (balance < Integer.parseInt(amount)) {
-                            JOptionPane.showMessageDialog(null, "Insufficient Balance");
+                            JOptionPane.showMessageDialog(null, "Số dư không đủ để thực hiện giao dịch");
                             return;
                         }
 
-                        connector.statement.executeUpdate("insert into bank values('" + pinCode + "', '" + date + "', 'Withdraw', '" + amount + "' )");
+                        connector.statement.executeUpdate("insert into bank values('" + this.pinCode + "', '" + date + "', 'Withdraw', '" + amount + "' )");
                         JOptionPane.showMessageDialog(null, "Vnđ. " + amount + " Rút tiền thành công");
                         setVisible(false);
                         new Home(this.pinCode);

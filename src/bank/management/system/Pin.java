@@ -1,6 +1,7 @@
 package bank.management.system;
 
 import bank.management.system.constants.Background;
+import bank.management.system.services.HashUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,10 +9,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Pin extends JFrame implements ActionListener {
-    JLabel backgroundLabel, headingLabel, newPinLabel, confirmPinLabel;
+    JLabel backgroundLabel, headingLabel, cardNumberLabel, oldPinCodeLabel, newPinLabel, confirmPinLabel;
     JButton confirmButton, backButton;
-    JPasswordField pinCodePasswordField, pinCodeConfirmPasswordField;
+    JTextField cardNumberTextField;
+    JPasswordField oldPinCodePasswordField, pinCodePasswordField, pinCodeConfirmPasswordField;
     String pinCode;
+
+    int formStartY = 200;
 
     Pin(String pinCode) {
         this.pinCode = pinCode;
@@ -23,35 +27,60 @@ public class Pin extends JFrame implements ActionListener {
         headingLabel = new JLabel("Đổi mã PIN");
         headingLabel.setForeground(Color.BLACK);
         headingLabel.setFont(new Font("Arial", Font.BOLD, Background.HEADING_FONT_SIZE));
-        headingLabel.setBounds(0, 180, Background.BACKGROUND_WIDTH, 35);
+        headingLabel.setBounds(0, 160, Background.BACKGROUND_WIDTH, 35);
         headingLabel.setHorizontalAlignment(SwingConstants.CENTER);
         add(headingLabel);
 
+        cardNumberLabel = new JLabel("Số thẻ: ");
+        cardNumberLabel.setForeground(Color.BLACK);
+        cardNumberLabel.setFont(new Font("System", Font.BOLD, 16));
+        cardNumberLabel.setBounds(Background.ATM_BUTTON_LEFT_START_X + 20, this.formStartY, 150, Background.ATM_BUTTON_HEIGHT);
+        add(cardNumberLabel);
+
+        cardNumberTextField = new JTextField();
+        cardNumberTextField.setBackground(Color.LIGHT_GRAY);
+        cardNumberTextField.setForeground(Color.BLACK);
+        cardNumberTextField.setBounds(Background.ATM_BUTTON_LEFT_START_X + 170, this.formStartY, 180, Background.ATM_BUTTON_HEIGHT);
+        cardNumberTextField.setFont(new Font("Arial", Font.BOLD, 16));
+        add(cardNumberTextField);
+
+        oldPinCodeLabel = new JLabel("Mã PIN: ");
+        oldPinCodeLabel.setForeground(Color.BLACK);
+        oldPinCodeLabel.setFont(new Font("System", Font.BOLD, 16));
+        oldPinCodeLabel.setBounds(Background.ATM_BUTTON_LEFT_START_X + 20, Background.getPositionY(this.formStartY, 1), 150, Background.ATM_BUTTON_HEIGHT);
+        add(oldPinCodeLabel);
+
+        oldPinCodePasswordField = new JPasswordField();
+        oldPinCodePasswordField.setBackground(Color.LIGHT_GRAY);
+        oldPinCodePasswordField.setForeground(Color.BLACK);
+        oldPinCodePasswordField.setBounds(Background.ATM_BUTTON_LEFT_START_X + 170, Background.getPositionY(this.formStartY, 1), 180, Background.ATM_BUTTON_HEIGHT);
+        oldPinCodePasswordField.setFont(new Font("Arial", Font.BOLD, 16));
+        add(oldPinCodePasswordField);
 
         newPinLabel = new JLabel("Mã PIN mới: ");
         newPinLabel.setForeground(Color.BLACK);
         newPinLabel.setFont(new Font("System", Font.BOLD, 16));
-        newPinLabel.setBounds(Background.ATM_BUTTON_LEFT_START_X + 20, 230, 150, Background.ATM_BUTTON_HEIGHT);
+        newPinLabel.setBounds(Background.ATM_BUTTON_LEFT_START_X + 20, Background.getPositionY(this.formStartY, 2), 150, Background.ATM_BUTTON_HEIGHT);
         add(newPinLabel);
 
         pinCodePasswordField = new JPasswordField();
         pinCodePasswordField.setBackground(Color.LIGHT_GRAY);
         pinCodePasswordField.setForeground(Color.BLACK);
-        pinCodePasswordField.setBounds(Background.ATM_BUTTON_LEFT_START_X + 170, 230, 180, Background.ATM_BUTTON_HEIGHT);
-        pinCodePasswordField.setFont(new Font("Arial", Font.BOLD, 22));
+        pinCodePasswordField.setBounds(Background.ATM_BUTTON_LEFT_START_X + 170, Background.getPositionY(this.formStartY, 2), 180, Background.ATM_BUTTON_HEIGHT);
+        pinCodePasswordField.setFont(new Font("Arial", Font.BOLD, 16));
         add(pinCodePasswordField);
 
         confirmPinLabel = new JLabel("Xác nhận mã PIN: ");
         confirmPinLabel.setForeground(Color.BLACK);
         confirmPinLabel.setFont(new Font("System", Font.BOLD, 16));
-        confirmPinLabel.setBounds(Background.ATM_BUTTON_LEFT_START_X + 20, 270, 150, Background.ATM_BUTTON_HEIGHT);
+        confirmPinLabel.setBounds(Background.ATM_BUTTON_LEFT_START_X + 20, Background.getPositionY(this.formStartY, 3), 150, Background.ATM_BUTTON_HEIGHT);
         add(confirmPinLabel);
 
         pinCodeConfirmPasswordField = new JPasswordField();
         pinCodeConfirmPasswordField.setBackground(Color.LIGHT_GRAY);
         pinCodeConfirmPasswordField.setForeground(Color.BLACK);
-        pinCodeConfirmPasswordField.setBounds(Background.ATM_BUTTON_LEFT_START_X + 170, 270, 180, Background.ATM_BUTTON_HEIGHT);
-        pinCodeConfirmPasswordField.setFont(new Font("Arial", Font.BOLD, Background.ATM_BUTTON_HEIGHT));
+        pinCodeConfirmPasswordField.setBounds(Background.ATM_BUTTON_LEFT_START_X + 170, Background.getPositionY(this.formStartY, 3), 180, Background.ATM_BUTTON_HEIGHT);
+        pinCodeConfirmPasswordField.setFont(new Font("Arial", Font.BOLD, 16));
         add(pinCodeConfirmPasswordField);
 
 
@@ -82,30 +111,49 @@ public class Pin extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
-        try {
-
-            String newPin = pinCodePasswordField.getText();
-            String confirmPin = pinCodeConfirmPasswordField.getText();
-
-            if (!newPin.equals(confirmPin)) {
-                JOptionPane.showMessageDialog(null, "Entered PIN does not match");
+        if (e.getSource() == confirmButton) {
+            if (cardNumberTextField.getText().equals("")) {
+                JOptionPane.showMessageDialog(null, "Vui lòng nhập số thẻ");
+                return;
+            } else if (oldPinCodePasswordField.getText().equals("")) {
+                JOptionPane.showMessageDialog(null, "Vui lòng nhập mật khẩu hiện tại");
+                return;
+            } else if (pinCodePasswordField.getText().equals("")) {
+                JOptionPane.showMessageDialog(null, "Vui lòng nhập mật khẩu mới");
+                return;
+            } else if (pinCodeConfirmPasswordField.getText().equals("")) {
+                JOptionPane.showMessageDialog(null, "Vui lòng xác nhận mật khẩu");
                 return;
             }
-            if (e.getSource() == confirmButton) {
-                if (pinCodePasswordField.getText().equals("")) {
-                    JOptionPane.showMessageDialog(null, "Enter New PIN");
-                    return;
-                }
-                if (pinCodeConfirmPasswordField.getText().equals("")) {
-                    JOptionPane.showMessageDialog(null, "Re-Enter New PIN");
+
+            String cardNumber = cardNumberTextField.getText();
+
+            String oldPinCode = oldPinCodePasswordField.getText();
+            String oldPinCodeHash = HashUtil.hashSHA256(oldPinCode + cardNumber);
+
+            String newPinCode = pinCodePasswordField.getText();
+            String confirmPinCode = pinCodeConfirmPasswordField.getText();
+
+            if (!oldPinCodeHash.equals(this.pinCode)) {
+                JOptionPane.showMessageDialog(null, "Số thẻ hoặc mã PIN không đúng");
+                return;
+            }
+
+            try {
+                if (!newPinCode.equals(confirmPinCode)) {
+                    JOptionPane.showMessageDialog(null, "Mã PIN mới xác nhận không chính xác");
                     return;
                 }
 
+                String newPinCodeHash = HashUtil.hashSHA256(newPinCode + cardNumber);
+
                 Connector connector = new Connector();
-                String updateBankQuery = "update bank set pin_code = '" + newPin + "' where pin_code = '" + pinCode + "'";
-                String updateLoginQuery = "update login set pin_code = '" + newPin + "' where pin = '" + pinCode + "'";
-                String updateSignupThird = "update signupthree set pin_code = '" + newPin + "' where pin_code = '" + pinCode + "'";
+
+                String updateBankQuery = "update bank set pin = '" + newPinCodeHash + "' where pin = '" + this.pinCode + "'";
+
+                String updateLoginQuery = "update login set pin = '" + newPinCodeHash + "' where pin = '" + this.pinCode + "'";
+
+                String updateSignupThird = "update signup_third set pin = '" + newPinCodeHash + "' where pin = '" + this.pinCode + "'";
 
                 connector.statement.executeUpdate(updateBankQuery);
                 connector.statement.executeUpdate(updateLoginQuery);
@@ -114,18 +162,13 @@ public class Pin extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(null, "PIN changed successfully");
                 setVisible(false);
                 new Home(this.pinCode);
-
-            } else if (e.getSource() == backButton) {
-                new Home(this.pinCode);
-                setVisible(false);
+            } catch (Exception E) {
+                E.printStackTrace();
             }
-
-
-        } catch (Exception E) {
-            E.printStackTrace();
+        } else if (e.getSource() == backButton) {
+            setVisible(false);
+            new Home(this.pinCode);
         }
-
-
     }
 
     public static void main(String[] args) {
