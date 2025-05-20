@@ -84,7 +84,7 @@ public class CustomWithdraw extends JFrame implements ActionListener {
                     try {
                         Integer.parseInt(amount);
                         Connector connector = new Connector();
-                        ResultSet resultSet = connector.statement.executeQuery("select * from bank where pin_code = '" + pinCode + "'");
+                        ResultSet resultSet = connector.statement.executeQuery("select * from bank where pin = '" + pinCode + "'");
 
                         int balance = 0;
 
@@ -102,11 +102,11 @@ public class CustomWithdraw extends JFrame implements ActionListener {
                         }
 
                         connector.statement.executeUpdate("insert into bank values('" + pinCode + "', '" + date + "', 'Withdraw', '" + amount + "' )");
-                        JOptionPane.showMessageDialog(null, "Vnđ. " + amount + " Debited Successfully");
+                        JOptionPane.showMessageDialog(null, "Vnđ. " + amount + " Rút tiền thành công");
                         setVisible(false);
                         new Home(this.pinCode);
                     } catch (NumberFormatException numberException) {
-                        JOptionPane.showMessageDialog(null, "Giá trị chuyển khoản là số");
+                        JOptionPane.showMessageDialog(null, "Giá trị rút là số");
                     }
                 }
             } catch (Exception ex) {

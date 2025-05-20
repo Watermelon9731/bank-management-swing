@@ -41,14 +41,14 @@ public class Deposit extends JFrame implements ActionListener {
 
         depositButton = new JButton("Chuyển khoản");
         depositButton.setBounds(Background.ATM_BUTTON_RIGHT_START_X, Background.ATM_BUTTON_START_Y, 150, Background.ATM_BUTTON_HEIGHT);
-        depositButton.setBackground(new Color(65, 125, 128));
+        depositButton.setBackground(Background.BUTTON_PRIMARY);
         depositButton.setForeground(Color.WHITE);
         depositButton.addActionListener(this);
         add(depositButton);
 
         backButton = new JButton("Quay lại");
         backButton.setBounds(Background.ATM_BUTTON_RIGHT_START_X, Background.ATM_BUTTON_START_Y + 52, 150, Background.ATM_BUTTON_HEIGHT);
-        backButton.setBackground(new Color(65, 125, 128));
+        backButton.setBackground(Background.BUTTON_INFO);
         backButton.setForeground(Color.WHITE);
         backButton.addActionListener(this);
         add(backButton);
@@ -75,7 +75,7 @@ public class Deposit extends JFrame implements ActionListener {
                     JOptionPane.showMessageDialog(null, "Vui lòng nhập số tiền muốn chuyển");
                 } else {
                     try {
-                        Integer.parseInt(amount);
+                        Float.parseFloat(amount);
                         Connector connector = new Connector();
                         String addQuery = "insert into bank values('" + this.pinCode + "', '" + date + "', 'Deposit', '" + amount + "')";
                         connector.statement.executeUpdate(addQuery);

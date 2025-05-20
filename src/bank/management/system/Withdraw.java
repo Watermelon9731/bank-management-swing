@@ -1,6 +1,7 @@
 package bank.management.system;
 
 import bank.management.system.constants.Background;
+import bank.management.system.services.StringUtil;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
@@ -83,7 +84,7 @@ public class Withdraw extends JFrame implements ActionListener {
 
         customWithdrawButton = new JButton("Số khác");
         customWithdrawButton.setForeground(Color.WHITE);
-        customWithdrawButton.setBackground(Background.BUTTON_WARNING);
+        customWithdrawButton.setBackground(Background.BUTTON_SUGGEST);
         customWithdrawButton.setBounds(Background.ATM_BUTTON_LEFT_START_X, Background.getPositionY(Background.ATM_BUTTON_START_Y, 3), 150, Background.ATM_BUTTON_HEIGHT);
         customWithdrawButton.addActionListener(this);
         add(customWithdrawButton);
@@ -115,11 +116,12 @@ public class Withdraw extends JFrame implements ActionListener {
             setVisible(false);
             new CustomWithdraw(this.pinCode);
         } else {
-            String amount = ((JButton) e.getSource()).getText().substring(4);
+            String rawAmount = ((JButton) e.getSource()).getText();
+            String amount = StringUtil.parseStringToValue(rawAmount);
             Connector connector = new Connector();
             Date date = new Date();
             try {
-                ResultSet resultSet = connector.statement.executeQuery("select * from bank where pin_code = '" + this.pinCode + "'");
+                ResultSet resultSet = connector.statement.executeQuery("select * from bank where pin = '" + this.pinCode + "'");
                 int balance = 0;
                 while (resultSet.next()) {
                     if (resultSet.getString("type").equals("Deposit")) {
@@ -129,13 +131,13 @@ public class Withdraw extends JFrame implements ActionListener {
                     }
                 }
 
-                if (e.getSource() != backButton && balance < Integer.parseInt(amount)) {
-                    JOptionPane.showMessageDialog(null, "Insufficient Balance");
+                if (balance < Integer.parseInt(amount)) {
+                    JOptionPane.showMessageDialog(null, "Số dư không đủ để thực hiện giao dịch");
                     return;
                 }
 
-                connector.statement.executeUpdate("insert into bank values('" + this.pinCode + "','" + date + "', 'withdraw', '" + amount + "')");
-                JOptionPane.showMessageDialog(null, "Vnđ " + amount + " Debited Successfully");
+                connector.statement.executeUpdate("insert into bank values('" + this.pinCode + "','" + date + "', 'Withdraw', '" + amount + "')");
+                JOptionPane.showMessageDialog(null, "Vnđ " + amount + " Rút tiền thành công");
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
