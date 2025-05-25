@@ -1,6 +1,8 @@
 package bank.management.system;
 
 import bank.management.system.constants.Background;
+import bank.management.system.controller.AccountController;
+import bank.management.system.controller.TransactionController;
 import bank.management.system.services.StringUtil;
 
 import javax.swing.*;
@@ -11,6 +13,7 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 
 public class Withdraw extends JFrame implements ActionListener {
@@ -92,7 +95,7 @@ public class Withdraw extends JFrame implements ActionListener {
         backButton = new JButton("Quay lại");
         backButton.setForeground(Color.WHITE);
         backButton.setBackground(Background.BUTTON_WARNING);
-        backButton.setBounds(Background.ATM_BUTTON_LEFT_START_X, Background.getPositionY(Background.ATM_BUTTON_START_Y, 3), 150, Background.ATM_BUTTON_HEIGHT);
+        backButton.setBounds(Background.ATM_BUTTON_RIGHT_START_X, Background.getPositionY(Background.ATM_BUTTON_START_Y, 3), 150, Background.ATM_BUTTON_HEIGHT);
         backButton.addActionListener(this);
         add(backButton);
 
@@ -119,30 +122,16 @@ public class Withdraw extends JFrame implements ActionListener {
             String rawAmount = ((JButton) e.getSource()).getText();
             String amount = StringUtil.parseStringToValue(rawAmount);
 
-            Connector connector = new Connector();
-            Date date = new Date();
-
             try {
-                ResultSet resultSet = connector.statement.executeQuery("select * from bank where pin = '" + this.pinCode + "'");
-                int balance = 0;
-
-                while (resultSet.next()) {
-                    if (resultSet.getString("type").equals("Deposit")) {
-                        balance += Integer.parseInt(resultSet.getString("amount"));
-                    } else {
-                        balance -= Integer.parseInt(resultSet.getString("amount"));
-                    }
+                boolean isSuccess = TransactionController.withdraw(this.pinCode, amount);
+                if (isSuccess) {
+                    JOptionPane.showMessageDialog(null, StringUtil.parseIntValueToFormatStringValue(Integer.parseInt(amount)) + " vnđ" + " Rút tiền thành công");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Rút tiền không thành công");
                 }
-
-                if (balance < Integer.parseInt(amount)) {
-                    JOptionPane.showMessageDialog(null, "Số dư không đủ để thực hiện giao dịch");
-                    return;
-                }
-
-                connector.statement.executeUpdate("insert into bank values('" + this.pinCode + "','" + date + "', 'Withdraw', '" + amount + "')");
-                JOptionPane.showMessageDialog(null, "Vnđ " + amount + " Rút tiền thành công");
             } catch (Exception ex) {
                 ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Rút tiền không thành công");
             }
         }
     }

@@ -1,6 +1,8 @@
 package bank.management.system;
 
 import bank.management.system.constants.Background;
+import bank.management.system.controller.TransactionController;
+import bank.management.system.services.StringUtil;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
@@ -68,20 +70,20 @@ public class Deposit extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         try {
             String amount = amountTextField.getText();
-            Date date = new Date();
 
             if (e.getSource() == depositButton) {
                 if (amount.equals("")) {
                     JOptionPane.showMessageDialog(null, "Vui lòng nhập số tiền muốn nộp");
                 } else {
                     try {
-                        Float.parseFloat(amount);
-                        Connector connector = new Connector();
-                        String addQuery = "insert into bank values('" + this.pinCode + "', '" + date + "', 'Deposit', '" + amount + "')";
-                        connector.statement.executeUpdate(addQuery);
-                        JOptionPane.showMessageDialog(null, "Nạp tiền thành công '" + amount + "'");
-                        new Home(this.pinCode);
-                        setVisible(false);
+                        boolean res = TransactionController.deposit(pinCode, amount);
+                        if (res) {
+                            JOptionPane.showMessageDialog(null, "Nạp tiền thành công '" + StringUtil.parseIntValueToFormatStringValue(Integer.parseInt(amount)) + "' vnđ");
+                            new Home(this.pinCode);
+                            setVisible(false);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Nạp tiền không thành công");
+                        }
                     } catch (NumberFormatException numberException) {
                         JOptionPane.showMessageDialog(null, "Giá trị tiền nộp là số");
                     }
