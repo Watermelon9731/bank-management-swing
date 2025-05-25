@@ -1,6 +1,8 @@
 package bank.management.system;
 
 import bank.management.system.constants.Background;
+import bank.management.system.controller.AccountController;
+import bank.management.system.model.Account;
 import bank.management.system.services.HashUtil;
 
 import javax.swing.*;
@@ -125,12 +127,9 @@ public class Login extends JFrame implements ActionListener {
                         try {
                             String pinCode = HashUtil.hashSHA256(pin + cardNumber);
 
-                            Connector connector = new Connector();
-                            String loginQuery = "select * from login where card_number='" + cardNumber + "' and pin='" + pinCode + "'";
+                            Boolean res = AccountController.login(pinCode, cardNumber);
 
-                            ResultSet rs = connector.statement.executeQuery(loginQuery);
-
-                            if (rs.next()) {
+                            if (res) {
                                 setVisible(false);
                                 new Home(pinCode);
                             } else {

@@ -1,6 +1,8 @@
 package bank.management.system;
 
 import bank.management.system.constants.Background;
+import bank.management.system.controller.AccountController;
+import bank.management.system.model.Account;
 import bank.management.system.services.StringUtil;
 
 import java.awt.*;
@@ -8,6 +10,7 @@ import java.sql.ResultSet;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 public class BalanceInquiry extends JFrame implements ActionListener {
     String pinCode;
@@ -54,17 +57,9 @@ public class BalanceInquiry extends JFrame implements ActionListener {
 
         int balance = 0;
         try {
-            Connector connector = new Connector();
-            ResultSet resultSet = connector.statement.executeQuery("select * from bank where pin = '" + pinCode + "'");
-            while (resultSet.next()) {
-                if (resultSet.getString("type").equals("Deposit")) {
-                    balance += Integer.parseInt(resultSet.getString("amount"));
-                } else {
-                    balance -= Integer.parseInt(resultSet.getString("amount"));
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            balance += AccountController.getAccountBalance(this.pinCode);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
 
         balanceInquiryLabel.setText(StringUtil.parseIntValueToFormatStringValue(balance) + " vnđ");

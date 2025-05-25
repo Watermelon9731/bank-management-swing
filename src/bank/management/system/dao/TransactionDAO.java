@@ -1,12 +1,29 @@
 package bank.management.system.dao;
 
+import bank.management.system.Connector;
 import bank.management.system.model.Transaction;
-import java.sql.SQLException;
-import java.util.List;
 
-public interface TransactionDAO {
-    void save(Transaction transaction) throws SQLException;
-    List<Transaction> findByPin(String pin) throws SQLException;
-    int getBalance(String pin) throws SQLException;
-    void updatePin(String oldPin, String newPin) throws SQLException;
-} 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class TransactionDAO {
+    private Connector connector;
+
+    public TransactionDAO(Connector connector) {
+        this.connector = connector;
+    }
+
+    public boolean deposit(String pin, int amount) {
+        String query = "select * from bank where pin = '" + pin + "'";
+        try {
+            ResultSet res = connector.statement.executeQuery(query);
+            if (res.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return false;
+    }
+}

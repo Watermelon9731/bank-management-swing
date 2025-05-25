@@ -93,9 +93,7 @@ public class Home extends JFrame implements ActionListener {
         add(backgroundLabel);
 
         setVisible(true);
-    }
-
-    ;
+    };
 
     @Override
     public void actionPerformed(ActionEvent e) {
