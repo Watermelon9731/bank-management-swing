@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class Connector {
     Connection connect = null;
-    Statement statement = null;
+    public Statement statement = null;
 
     public Connector() {
         try {

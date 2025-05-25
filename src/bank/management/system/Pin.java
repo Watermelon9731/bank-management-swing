@@ -118,7 +118,7 @@ public class Pin extends JFrame implements ActionListener {
             } else if (oldPinCodePasswordField.getText().equals("")) {
                 JOptionPane.showMessageDialog(null, "Vui lòng nhập mật khẩu hiện tại");
                 return;
-            } else if (pinCodePasswordField.getText().equals("")) {
+            } else if (pinCodePasswordField.getText().equals("") || pinCodeConfirmPasswordField.getText().length() != 4) {
                 JOptionPane.showMessageDialog(null, "Vui lòng nhập mật khẩu mới");
                 return;
             } else if (pinCodeConfirmPasswordField.getText().equals("")) {
@@ -134,19 +134,20 @@ public class Pin extends JFrame implements ActionListener {
             String newPinCode = pinCodePasswordField.getText();
             String confirmPinCode = pinCodeConfirmPasswordField.getText();
 
+            String newPinCodeHash = HashUtil.hashSHA256(newPinCode + cardNumber);
+
             if (!oldPinCodeHash.equals(this.pinCode)) {
                 JOptionPane.showMessageDialog(null, "Số thẻ hoặc mã PIN không đúng");
+                return;
+            } else if (newPinCodeHash.equals(this.pinCode)) {
+                JOptionPane.showMessageDialog(null, "Mật khẩu mới không được trùng với mật khẩu cũ");
+                return;
+            } else if (!newPinCode.equals(confirmPinCode)) {
+                JOptionPane.showMessageDialog(null, "Mã PIN mới xác nhận không chính xác");
                 return;
             }
 
             try {
-                if (!newPinCode.equals(confirmPinCode)) {
-                    JOptionPane.showMessageDialog(null, "Mã PIN mới xác nhận không chính xác");
-                    return;
-                }
-
-                String newPinCodeHash = HashUtil.hashSHA256(newPinCode + cardNumber);
-
                 Connector connector = new Connector();
 
                 String updateBankQuery = "update bank set pin = '" + newPinCodeHash + "' where pin = '" + this.pinCode + "'";
